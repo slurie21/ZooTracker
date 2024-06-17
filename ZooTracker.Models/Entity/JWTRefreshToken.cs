@@ -21,11 +21,14 @@ namespace ZooTracker.Models.Entity
 
         [Key]
         public int ID { get; set; }
+        [Required]
         public string UserId { get; set; }
+        [Required]
         public string Token { get; set; }
+        [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-        public DateTime ExpiresAt {  get; set; }
+        [Required]
+        public DateTime ExpiresAt { get; set; } = DateTime.UtcNow.AddDays(15);
         
     }
 }
