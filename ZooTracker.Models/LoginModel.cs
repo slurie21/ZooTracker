@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ZooTracker.Models
 {
-    public class Login
+    public class LoginModel
     {
         [Required]
         public string Email { get; set; }

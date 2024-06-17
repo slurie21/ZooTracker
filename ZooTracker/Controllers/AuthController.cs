@@ -42,7 +42,7 @@ namespace ZooTracker.Controllers
         [HttpPost("login")]
         [AllowAnonymous]
         [GetGuidForLogging]
-        public async Task<IActionResult> Login([FromBody] Login login)
+        public async Task<IActionResult> Login([FromBody] LoginModel login)
         {
             var user = await _signInManager.UserManager.FindByEmailAsync(login.Email);
             if (user == null)
@@ -72,7 +72,7 @@ namespace ZooTracker.Controllers
             
             await _unitOfWork.JwtRefreshToken.Add(refreshTokenObject);
             await _unitOfWork.Save();
-            LoginResult loginResult = new LoginResult(user,token, refreshToken);
+            LoginResultModel loginResult = new LoginResultModel(user,token, refreshToken);
 
             return Ok(loginResult);
         }

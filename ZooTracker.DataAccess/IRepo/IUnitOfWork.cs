@@ -11,6 +11,7 @@ namespace ZooTracker.DataAccess.IRepo
         IJWTRefreshRepo JwtRefreshToken { get; }
         IJwtBlacklistTokenRepo JwtBlacklistToken { get; }
         IEnterpriseLoggingRepo EnterpriseLogging { get; }
+        IZooRepo Zoos {get; }
         Task Save();
     }
 }
