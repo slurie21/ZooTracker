@@ -1,6 +1,6 @@
 ﻿using ZooTracker.DataAccess.Context;
 using ZooTracker.DataAccess.IRepo;
-using ZooTracker.Models.DTO;
+using ZooTracker.Models.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

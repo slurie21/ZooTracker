@@ -1,10 +1,10 @@
-﻿using ZooTracker.Models.DTO;
-using ZooTracker.Models.ViewModels;
+﻿using ZooTracker.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZooTracker.Models.Entity;
 
 namespace ZooTracker.Models
 {

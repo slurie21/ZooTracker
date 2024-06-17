@@ -1,11 +1,11 @@
 ﻿using ZooTracker.Filters.ActionFilters;
-using ZooTracker.Models.DTO;
 using ZooTracker.Models.ViewModels;
-using ZooTracker.Models;
+using ZooTracker.Models.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ZooTracker.DataAccess.IRepo;
+using ZooTracker.Models.Entity;
 
 namespace ZooTracker.Controllers
 {

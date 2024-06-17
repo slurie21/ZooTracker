@@ -2,7 +2,7 @@ using ZooTracker.DataAccess;
 using ZooTracker.DataAccess.Context;
 using ZooTracker.DataAccess.IRepo;
 using ZooTracker.Filters.ActionFilters;
-using ZooTracker.Models.DTO;
+using ZooTracker.Models.Entity;
 using ZooTracker.Utility;
 using ZooTracker.Utility.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

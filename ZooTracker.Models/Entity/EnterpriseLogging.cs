@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZooTracker.Models
+namespace ZooTracker.Models.Entity
 {
     [Table("EnterpriseLogging", Schema = "Logging")]
     public class EnterpriseLogging

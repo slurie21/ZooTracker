@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using ZooTracker.Models.DTO;
+using ZooTracker.Models.Entity;
 using ZooTracker.Utility.Interface;
 using Microsoft.Extensions.Configuration;
 

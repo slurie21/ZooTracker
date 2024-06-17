@@ -1,5 +1,5 @@
 ﻿using ZooTracker.Models;
-using ZooTracker.Models.DTO;
+using ZooTracker.Models.Entity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;

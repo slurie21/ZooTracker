@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZooTracker.Models
+namespace ZooTracker.Models.Entity
 {
-    [Table("JwtRefresh", Schema ="dbo")]
+    [Table("JwtRefresh")]
     public class JWTRefreshToken
     {
         public JWTRefreshToken() { }
@@ -17,8 +18,8 @@ namespace ZooTracker.Models
             UserId = userID;
             Token = refreshToken;
         }
-        
 
+        [Key]
         public int ID { get; set; }
         public string UserId { get; set; }
         public string Token { get; set; }
