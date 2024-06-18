@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZooTracker.Models
+namespace ZooTracker.Models.Entity
 {
-    [Table("JwtRefresh", Schema ="dbo")]
+    [Table("JwtRefresh")]
     public class JWTRefreshToken
     {
         public JWTRefreshToken() { }
@@ -17,12 +18,17 @@ namespace ZooTracker.Models
             UserId = userID;
             Token = refreshToken;
         }
-        
 
+        [Key]
         public int ID { get; set; }
+        [Required]
         public string UserId { get; set; }
+        [Required]
         public string Token { get; set; }
+        [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        [Required]
+        public DateTime ExpiresAt { get; set; } = DateTime.UtcNow.AddDays(15);
         
     }
 }

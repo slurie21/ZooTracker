@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZooTracker.Models.DTO
+namespace ZooTracker.Models.Entity
 {
     public class JwtBlacklistToken
     {
@@ -19,7 +20,7 @@ namespace ZooTracker.Models.DTO
             UserId = userID;
         }
 
-
+        [Key]
         public int Id { get; set; }
         public string Jti { get; set; }
         public string Token { get; set; }

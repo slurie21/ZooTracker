@@ -1,4 +1,4 @@
-﻿using ZooTracker.Models.DTO;
+﻿using ZooTracker.Models.Entity;
 using ZooTracker.Models.ViewModels;
 using ZooTracker.Models;
 using ZooTracker.DataAccess.IRepo;

@@ -1,18 +1,18 @@
-﻿using ZooTracker.Models.DTO;
-using ZooTracker.Models.ViewModels;
+﻿using ZooTracker.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZooTracker.Models.Entity;
 
 namespace ZooTracker.Models
 {
-    public class LoginResult
+    public class LoginResultModel
     {
-        public LoginResult() { }
+        public LoginResultModel() { }
 
-        public LoginResult(ApplicationUser user, string token, string refreshToken)
+        public LoginResultModel(ApplicationUser user, string token, string refreshToken)
         {
             LoggedIn = true;
             User = new UserVM

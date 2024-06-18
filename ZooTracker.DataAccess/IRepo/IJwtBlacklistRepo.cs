@@ -1,4 +1,4 @@
-﻿using ZooTracker.Models.DTO;
+﻿using ZooTracker.Models.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

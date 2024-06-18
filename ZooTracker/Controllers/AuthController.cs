@@ -1,5 +1,4 @@
 ﻿using ZooTracker.Filters.ActionFilters;
-using ZooTracker.Models.DTO;
 using ZooTracker.Models;
 using ZooTracker.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +10,7 @@ using ZooTracker.DataAccess.IRepo;
 using ZooTracker.Utility.Interface;
 using System.Security.Claims;
 using Microsoft.IdentityModel.JsonWebTokens;
+using ZooTracker.Models.Entity;
 
 namespace ZooTracker.Controllers
 {
@@ -20,16 +20,12 @@ namespace ZooTracker.Controllers
     [ServiceFilter(typeof(Auth_ConfirmJtiNotBlacklistedFilterAttribute))]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<AuthController> _logger;
         private readonly IJwtManager _jwtManager;
-        public AuthController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IUnitOfWork unitOfWork, ILogger<AuthController> logger, IJwtManager jwtManager, SignInManager<ApplicationUser> signInManager)
+        public AuthController(IUnitOfWork unitOfWork, ILogger<AuthController> logger, IJwtManager jwtManager, SignInManager<ApplicationUser> signInManager)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
             _unitOfWork = unitOfWork;
             _logger = logger;
             _jwtManager = jwtManager;
@@ -42,7 +38,7 @@ namespace ZooTracker.Controllers
         [HttpPost("login")]
         [AllowAnonymous]
         [GetGuidForLogging]
-        public async Task<IActionResult> Login([FromBody] Login login)
+        public async Task<IActionResult> Login([FromBody] LoginModel login)
         {
             var user = await _signInManager.UserManager.FindByEmailAsync(login.Email);
             if (user == null)
@@ -72,7 +68,7 @@ namespace ZooTracker.Controllers
             
             await _unitOfWork.JwtRefreshToken.Add(refreshTokenObject);
             await _unitOfWork.Save();
-            LoginResult loginResult = new LoginResult(user,token, refreshToken);
+            LoginResultModel loginResult = new LoginResultModel(user,token, refreshToken);
 
             return Ok(loginResult);
         }
@@ -117,6 +113,11 @@ namespace ZooTracker.Controllers
             string correlationID = HttpContext.Items["correlationID"].ToString() ?? "";
             bool refreshTokenValid = await _jwtManager.RefreshTokenValidate(refreshToken);
             
+            if(!refreshTokenValid) 
+            {
+                return BadRequest("Invalid refresh token");
+            }
+
             var refreshTokenObj = _unitOfWork.JwtRefreshToken.Get(t => t.Token.Equals(refreshToken));
             if (refreshTokenObj == null)
             {

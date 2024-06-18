@@ -8,9 +8,8 @@ using ZooTracker.Models.Entity;
 
 namespace ZooTracker.DataAccess.IRepo
 {
-    public interface IJWTRefreshRepo : IRepository<JWTRefreshToken>
+    public interface IZooRepo : IRepository<Zoo>
     {
-        Task<int> DeleteAllRefreshTokensByUserID(string userId);
 
     }
 }
