@@ -117,6 +117,11 @@ namespace ZooTracker.Controllers
             string correlationID = HttpContext.Items["correlationID"].ToString() ?? "";
             bool refreshTokenValid = await _jwtManager.RefreshTokenValidate(refreshToken);
             
+            if(!refreshTokenValid) 
+            {
+                return BadRequest("Invalid refresh token");
+            }
+
             var refreshTokenObj = _unitOfWork.JwtRefreshToken.Get(t => t.Token.Equals(refreshToken));
             if (refreshTokenObj == null)
             {

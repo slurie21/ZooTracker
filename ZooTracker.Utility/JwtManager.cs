@@ -96,7 +96,7 @@ namespace ZooTracker.Utility
             try
             {
                 var result = await tokenHandler.ValidateTokenAsync(refreshToken, validationParameters);
-                return true;
+                return result.IsValid;
             }catch(Exception ex)
             {
                 return false;

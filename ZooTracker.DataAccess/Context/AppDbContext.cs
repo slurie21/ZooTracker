@@ -21,6 +21,8 @@ namespace ZooTracker.DataAccess.Context
         public DbSet<JwtBlacklistToken> JwtBlacklistToken { get; set; }
         public DbSet<EnterpriseLogging> EnterpriseLogging { get; set; }
         public DbSet<Zoo> Zoos { get; set; }
+        public DbSet<Address> Address { get; set; }
+        public DbSet<OpenDaysHours> OpenDaysHours { get; set; }
 
 
     }
