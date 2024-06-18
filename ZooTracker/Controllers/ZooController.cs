@@ -10,6 +10,11 @@ namespace ZooTracker.Controllers
     [ServiceFilter(typeof(Auth_ConfirmJtiNotBlacklistedFilterAttribute))]
     public class ZooController : ControllerBase
     {
-        
+        [HttpPost("add")]
+        [GetGuidForLogging]
+        public async Task<IActionResult> AddZoo([FromBody] string tmp)
+        {
+            return Ok();
+        }
     }
 }
