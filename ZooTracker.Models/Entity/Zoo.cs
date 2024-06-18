@@ -21,9 +21,10 @@ namespace ZooTracker.Models.Entity
             TicketCost = zooVM.TicketCost;
             ChildTicket = zooVM.ChildTicket;
             SeniorTicket = zooVM.SeniorTicket;
-            Address = zooVM.Address;
-            OpenDaysHours = zooVM.OpenDaysHours;
+            Address = new ZooAddress(zooVM.Address);
+            OpenDaysHours = new List<OpenDaysHours>(zooVM.OpenDaysHours.Select(x => new OpenDaysHours(x)));
         }
+
 
         [Key]
         public int Id { get; set; }

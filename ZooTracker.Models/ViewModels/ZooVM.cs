@@ -14,7 +14,7 @@ namespace ZooTracker.Models.ViewModels
     {
         public ZooVM() { }
 
-        public ZooVM(Zoo zoo)
+        public ZooVM(Zoo zoo, bool onlyZoo = false)
         {
             Id = zoo.Id;
             Name = zoo.Name;
@@ -22,10 +22,14 @@ namespace ZooTracker.Models.ViewModels
             TicketCost = zoo.TicketCost;
             ChildTicket = zoo.ChildTicket;
             SeniorTicket = zoo.SeniorTicket;
-            Address = zoo.Address;
-            OpenDaysHours = zoo.OpenDaysHours;
-
+            if(!onlyZoo)
+            {
+                Address = new ZooAddressVM(zoo.Address);
+                OpenDaysHours = new List<OpenDaysHoursVM>(zoo.OpenDaysHours.Select(x => new OpenDaysHoursVM(x))); ;
+            }
+            
         }
+
 
         public int? Id { get; set; }
         [Required(ErrorMessage ="Zoo Name is required.")]
@@ -37,8 +41,8 @@ namespace ZooTracker.Models.ViewModels
         public double? ChildTicket { get; set; }
         public double? SeniorTicket { get; set; }
         [Required(ErrorMessage ="Zoo Must Have an address")]
-        public ZooAddress Address { get; set; }
+        public ZooAddressVM Address { get; set; } 
         [Required(ErrorMessage ="Zoo must have opening and closing times")]
-        public List<OpenDaysHours> OpenDaysHours { get; set; } = new List<OpenDaysHours>();
+        public List<OpenDaysHoursVM> OpenDaysHours { get; set; } 
     }
 }
