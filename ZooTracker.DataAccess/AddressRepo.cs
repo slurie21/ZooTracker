@@ -10,7 +10,7 @@ using ZooTracker.Models.Entity;
 
 namespace ZooTracker.DataAccess
 {
-    public class AddressRepo : Repository<Address>, IAddressRepo
+    public class AddressRepo : Repository<ZooAddress>, IAddressRepo
     {
         private AppDbContext _db;
 

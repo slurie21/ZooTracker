@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace ZooTracker.Models.Entity
 {
-    public class Address
+    [Table("ZooAddress", Schema = "Zoo")]
+    public class ZooAddress
     {
         [Key]
         public int Id { get; set; }

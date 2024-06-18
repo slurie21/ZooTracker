@@ -2,7 +2,7 @@
 
 namespace ZooTracker.DataAccess.IRepo
 {
-    public interface IAddressRepo : IRepository<Address>
+    public interface IAddressRepo : IRepository<ZooAddress>
     {
 
     }

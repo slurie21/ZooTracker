@@ -20,16 +20,12 @@ namespace ZooTracker.Controllers
     [ServiceFilter(typeof(Auth_ConfirmJtiNotBlacklistedFilterAttribute))]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<AuthController> _logger;
         private readonly IJwtManager _jwtManager;
-        public AuthController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IUnitOfWork unitOfWork, ILogger<AuthController> logger, IJwtManager jwtManager, SignInManager<ApplicationUser> signInManager)
+        public AuthController(IUnitOfWork unitOfWork, ILogger<AuthController> logger, IJwtManager jwtManager, SignInManager<ApplicationUser> signInManager)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
             _unitOfWork = unitOfWork;
             _logger = logger;
             _jwtManager = jwtManager;

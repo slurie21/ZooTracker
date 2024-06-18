@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ZooTracker.Models.Entity
 {
+    [Table("OpenDaysHours", Schema = "Zoo")]
     public class OpenDaysHours
     {
         [Key]
