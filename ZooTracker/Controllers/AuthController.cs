@@ -119,7 +119,7 @@ namespace ZooTracker.Controllers
             }
 
             var refreshTokenObj = _unitOfWork.JwtRefreshToken.Get(t => t.Token.Equals(refreshToken));
-            if (refreshTokenObj == null)
+             if (refreshTokenObj == null)
             {
                 return BadRequest("Invalid refresh token.");
             }
@@ -158,7 +158,7 @@ namespace ZooTracker.Controllers
                 return Forbid("Access Denied");
             }
 
-            return Ok(new { message = "Confirmed User", user = currentUser.GetUserVM() });
+            return Ok(new { message = "Confirmed User", user = new UserVM(currentUser) });
         }
 
     }

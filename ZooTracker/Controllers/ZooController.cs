@@ -25,6 +25,7 @@ namespace ZooTracker.Controllers
         }
 
         [HttpPost("add")]
+        [Authorize(Roles ="Admin")]
         [GetGuidForLogging]
         public async Task<IActionResult> AddZoo([FromBody] ZooVM zooVM)
         {

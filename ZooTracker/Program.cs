@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using ZooTracker.Utility.IRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -93,7 +94,8 @@ builder.Services.AddSwaggerGen(c =>
 }); //the above will allow me to pass through the JWT through swagger to be able to test secured endpoints
 
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-builder.Services.AddSingleton<IJwtManager, JwtManager>(); //no reason for a new item each time
+builder.Services.AddScoped<IJwtManager, JwtManager>(); //no reason for a new item each time
+builder.Services.AddScoped<IRoleSeeding, RoleSeeding>();
 builder.Services.AddScoped<Auth_ConfirmJtiNotBlacklistedFilterAttribute>();
 
 var app = builder.Build();
@@ -111,5 +113,23 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.Logger.LogInformation("Seeding the roles");
+// Seed roles
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var roleSeeder = services.GetRequiredService<IRoleSeeding>();
+        await roleSeeder.SeedRolesAsync();
+    }
+    catch (Exception ex)
+    {
+        // Handle exceptions
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred seeding the DB.");
+    }
+}
 
 app.Run();

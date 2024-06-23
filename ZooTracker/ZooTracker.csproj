@@ -27,8 +27,4 @@
     <ProjectReference Include="..\ZooTracker.Utility\ZooTracker.Utility.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Service\Interface\" />
-  </ItemGroup>
-
 </Project>

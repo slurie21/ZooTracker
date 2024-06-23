@@ -5,11 +5,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ZooTracker.DataAccess.IRepo;
-using ZooTracker.Models.Entity;
+using System.Security.Claims;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace ZooTracker.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/api/[controller]")]
     [ApiController]
     [Authorize]
     [ServiceFilter(typeof(Auth_ConfirmJtiNotBlacklistedFilterAttribute))]
@@ -32,15 +35,34 @@ namespace ZooTracker.Controllers
         [GetGuidForLogging]
         public async Task<IActionResult> Register([FromBody] RegistrationVM registrationVM)
         {
+            //need first check to be if role is going to be admin and then make sure that the user is an admin.
+            if (registrationVM.Role.Equals("Admin", StringComparison.InvariantCultureIgnoreCase))
+            {
+                string userId = User.FindFirstValue("userID") ?? "0";
+                if (userId == null || userId == "0") {
+                    return BadRequest("No user ID in token");
+                }
+
+                ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+                bool isAdmin = await  _userManager.IsInRoleAsync(currentUser, "Admin");
+
+                if (!isAdmin)
+                {
+                    return Forbid("Only Admin can register admin");
+                }
+            }
+
             string correlationID = HttpContext.Items["correlationID"].ToString() ?? "";
 
             _logger.LogInformation($"Starting process of creating new user and assigning roles. Correlation ID: {correlationID}");
             ApplicationUser newUser = new ApplicationUser(registrationVM);
-
+            
             var createUserResult = await _userManager.CreateAsync(newUser, registrationVM.Password);
             if (createUserResult.Succeeded)
             {
                 registrationVM.Id = newUser.Id;
+                //Below is ok to leave because if adding Admin the user adding the new admin is already being confirmed
+                await _userManager.AddToRoleAsync(newUser, registrationVM.Role);  //Add user or Admin depending on whats passed through.
                 await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { App = "ZooTracker", Area = "Auth", Note = $"User {newUser.Fname + " " + newUser.Lname} has been created successfully.", CreatedDate = DateTime.UtcNow, CorrelationID = correlationID });
                 _logger.LogInformation($"New user {registrationVM.Fname + " " + registrationVM.Lname} created successfully.");
             }
@@ -59,5 +81,29 @@ namespace ZooTracker.Controllers
             UserVM userVM = registrationVM.GetUserVM();
             return Created(string.Empty, userVM);
         }
+
+        [HttpGet("users")]
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            List<UserVM> userVMs = new List<UserVM>();
+            foreach(var user in users)
+            {
+                var role = await _userManager.GetRolesAsync(user);
+                userVMs.Add(
+                    new UserVM
+                    {
+                        Email = user.Email,
+                        Fname = user.Fname,
+                        Lname = user.Lname,
+                        Id = user.Id,
+                        Role = role.FirstOrDefault() ?? "User"
+                    }
+                ); 
+            }
+            return Ok(userVMs);
+        }
+
     }
 }
