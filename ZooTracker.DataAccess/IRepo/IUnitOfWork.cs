@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZooTracker.Models.ViewModels;
 
 namespace ZooTracker.DataAccess.IRepo
 {
@@ -14,6 +15,9 @@ namespace ZooTracker.DataAccess.IRepo
         IZooRepo Zoos {get; }
         IAddressRepo Address { get; }
         IOpenDaysHoursRepo OpenDaysHours { get; }
+        IUserVMRepo UserVM { get; }
         Task Save();
+        
+        
     }
 }

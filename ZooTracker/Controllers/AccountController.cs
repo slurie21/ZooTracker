@@ -1,14 +1,13 @@
-﻿using ZooTracker.Filters.ActionFilters;
-using ZooTracker.Models.ViewModels;
-using ZooTracker.Models.Entity;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ZooTracker.DataAccess.IRepo;
-using System.Security.Claims;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using ZooTracker.DataAccess.Context;
+using ZooTracker.DataAccess.IRepo;
+using ZooTracker.Filters.ActionFilters;
+using ZooTracker.Models.Entity;
+using ZooTracker.Models.ViewModels;
 
 namespace ZooTracker.Controllers
 {
@@ -36,7 +35,7 @@ namespace ZooTracker.Controllers
         public async Task<IActionResult> Register([FromBody] RegistrationVM registrationVM)
         {
             //need first check to be if role is going to be admin and then make sure that the user is an admin.
-            if (registrationVM.Role.Equals("Admin", StringComparison.InvariantCultureIgnoreCase))
+            if (!string.IsNullOrEmpty(registrationVM.Role) && registrationVM.Role.Equals("Admin", StringComparison.InvariantCultureIgnoreCase))
             {
                 string userId = User.FindFirstValue("userID") ?? "0";
                 if (userId == null || userId == "0") {
@@ -86,23 +85,8 @@ namespace ZooTracker.Controllers
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> GetUsers()
         {
-            var users = await _userManager.Users.ToListAsync();
-            List<UserVM> userVMs = new List<UserVM>();
-            foreach(var user in users)
-            {
-                var role = await _userManager.GetRolesAsync(user);
-                userVMs.Add(
-                    new UserVM
-                    {
-                        Email = user.Email,
-                        Fname = user.Fname,
-                        Lname = user.Lname,
-                        Id = user.Id,
-                        Role = role.FirstOrDefault() ?? "User"
-                    }
-                ); 
-            }
-            return Ok(userVMs);
+            var users = await _unitOfWork.UserVM.GetUserVMsWithRole();
+            return Ok(users);
         }
 
     }
