@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace ZooTracker.Models.DTO
+namespace ZooTracker.Models.Entity
 {
     public class ApplicationUser : IdentityUser
     {

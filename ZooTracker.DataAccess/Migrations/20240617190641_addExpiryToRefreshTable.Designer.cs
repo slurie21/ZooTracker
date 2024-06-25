@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZooTracker.DataAccess.Context;
 
@@ -11,9 +12,11 @@ using ZooTracker.DataAccess.Context;
 namespace ZooTracker.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240617190641_addExpiryToRefreshTable")]
+    partial class addExpiryToRefreshTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -335,37 +338,6 @@ namespace ZooTracker.DataAccess.Migrations
                     b.ToTable("JwtBlacklistToken");
                 });
 
-            modelBuilder.Entity("ZooTracker.Models.Entity.OpenDaysHours", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<TimeOnly?>("CloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<string>("DayOfWeek")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsOpen")
-                        .HasColumnType("bit");
-
-                    b.Property<TimeOnly?>("OpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<int>("ZooId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ZooId");
-
-                    b.ToTable("OpenDaysHours", "Zoo");
-                });
-
             modelBuilder.Entity("ZooTracker.Models.Entity.Zoo", b =>
                 {
                     b.Property<int>("Id")
@@ -374,73 +346,13 @@ namespace ZooTracker.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double?>("ChildTicket")
-                        .HasColumnType("float");
-
-                    b.Property<string>("MainAttraction")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("SeniorTicket")
-                        .HasColumnType("float");
-
-                    b.Property<double>("TicketCost")
-                        .HasColumnType("float");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Zoos", "Zoo");
-                });
-
-            modelBuilder.Entity("ZooTracker.Models.Entity.ZooAddress", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreateBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Street1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Street2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Zip")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ZooId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ZooId")
-                        .IsUnique();
-
-                    b.ToTable("ZooAddress", "Zoo");
+                    b.ToTable("Zoos");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -492,36 +404,6 @@ namespace ZooTracker.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ZooTracker.Models.Entity.OpenDaysHours", b =>
-                {
-                    b.HasOne("ZooTracker.Models.Entity.Zoo", "Zoo")
-                        .WithMany("OpenDaysHours")
-                        .HasForeignKey("ZooId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Zoo");
-                });
-
-            modelBuilder.Entity("ZooTracker.Models.Entity.ZooAddress", b =>
-                {
-                    b.HasOne("ZooTracker.Models.Entity.Zoo", "Zoo")
-                        .WithOne("Address")
-                        .HasForeignKey("ZooTracker.Models.Entity.ZooAddress", "ZooId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Zoo");
-                });
-
-            modelBuilder.Entity("ZooTracker.Models.Entity.Zoo", b =>
-                {
-                    b.Navigation("Address")
-                        .IsRequired();
-
-                    b.Navigation("OpenDaysHours");
                 });
 #pragma warning restore 612, 618
         }

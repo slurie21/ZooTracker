@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZooTracker.DataAccess.Context;
+using ZooTracker.Models.Entity;
 
 namespace ZooTracker.DataAccess
 {

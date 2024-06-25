@@ -4,7 +4,7 @@ using Moq;
 using Xunit;
 using FluentAssertions;
 using ZooTracker.Utility.Interface;
-using ZooTracker.Models.DTO;
+using ZooTracker.Models.Entity;
 using ZooTracker.Utility;
 using Xunit.Sdk;
 
