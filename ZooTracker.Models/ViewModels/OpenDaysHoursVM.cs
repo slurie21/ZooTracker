@@ -31,7 +31,5 @@ namespace ZooTracker.Models.ViewModels
         public TimeOnly? OpenTime { get; set; }
 
         public TimeOnly? CloseTime { get; set; }
-        public int ZooId { get; set; }
-
     }
 }

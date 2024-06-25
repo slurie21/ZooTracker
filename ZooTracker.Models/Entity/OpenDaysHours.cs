@@ -12,16 +12,16 @@ namespace ZooTracker.Models.Entity
     [Table("OpenDaysHours", Schema = "Zoo")]
     public class OpenDaysHours
     {
-        //public OpenDaysHours() { }
+        public OpenDaysHours() { }
 
-        //public OpenDaysHours(OpenDaysHoursVM openDaysHoursVM)
-        //{
-        //    this.Id = openDaysHoursVM.Id ?? 0;
-        //    this.DayOfWeek = openDaysHoursVM.DayOfWeek;
-        //    this.IsOpen = openDaysHoursVM.IsOpen;
-        //    this.OpenTime = openDaysHoursVM.OpenTime;
-        //    this.CloseTime = openDaysHoursVM.CloseTime;
-        //}
+        public OpenDaysHours(OpenDaysHoursVM openDaysHoursVM)
+        {
+            this.Id = openDaysHoursVM.Id ?? 0;
+            this.DayOfWeek = openDaysHoursVM.DayOfWeek;
+            this.IsOpen = openDaysHoursVM.IsOpen;
+            this.OpenTime = openDaysHoursVM.OpenTime;
+            this.CloseTime = openDaysHoursVM.CloseTime;
+        }
 
         [Key]
         public int Id { get; set; }

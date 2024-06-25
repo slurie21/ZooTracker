@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZooTracker.Models.Entity;
-using Microsoft.EntityFrameworkCore;
 
 namespace ZooTracker.DataAccess
 {
