@@ -54,7 +54,7 @@ namespace ZooTracker.DataAccess
             throw new NotImplementedException();
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public async Task<T> Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             query = query.Where(filter);
@@ -66,10 +66,10 @@ namespace ZooTracker.DataAccess
                     query = query.Include(includeProp);
                 }
             }
-            return query.FirstOrDefault();
+            return await query.FirstOrDefaultAsync();
         }
 
-        public IEnumerable<T> GetAll(string? includeProperties = null)
+        public async Task<IEnumerable<T>> GetAll(string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             if (!string.IsNullOrEmpty(includeProperties))
@@ -81,7 +81,7 @@ namespace ZooTracker.DataAccess
                 }
             }
 
-            return query.ToList();
+            return await query.ToListAsync();
         }
     }
 }

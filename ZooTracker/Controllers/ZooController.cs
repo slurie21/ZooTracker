@@ -32,7 +32,8 @@ namespace ZooTracker.Controllers
             string correlationID = HttpContext.Items["correlationID"].ToString() ?? "";
             var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email) ?? "User Email not found"; 
             Zoo zoo = new Zoo(zooVM);
-            zoo.Address.Created = DateTime.UtcNow;
+            zoo.Address.CreatedDate = DateTime.UtcNow;
+            zoo.CreatedBy = userEmail;            
             zoo.Address.CreateBy = userEmail;
             
             await _unitOfWork.Zoos.Add(zoo);
@@ -41,5 +42,31 @@ namespace ZooTracker.Controllers
             await _unitOfWork.Save();
             return Created(string.Empty, $"Zoo: {zoo.Name} created successfully"); //the first param should direct to where the resource can be access (get method)
         }
+
+        [HttpGet("allzoos")]
+        public async Task<IActionResult> GetAllZoos(string includeProperties = "OpenDaysHours,Address")
+        {
+            var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email) ?? "User Email not found";
+            _logger.LogInformation($"{userEmail} searched for all zoos");
+            var zoos = _unitOfWork.Zoos.GetAll(includeProperties);
+            return Ok(zoos);
+        }
+
+        [HttpGet("zoos")]
+        public async Task<IActionResult> GetAllActiveZoos(string includeProperties = "OpenDaysHours,Address")
+        {
+            var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email) ?? "User Email not found";
+            var zoos = await _unitOfWork.Zoos.Get(x => x.IsActive == true, includeProperties);
+            _logger.LogInformation($"{userEmail} searched for all active zoos");
+            return Ok(zoos);
+        }
+
+        [HttpGet("zoo/{id}")]
+        public async Task<IActionResult> GetZoo(string id)
+        {
+
+            return Ok();
+        }
+
     }
 }
