@@ -35,10 +35,7 @@ namespace ZooTracker.Models.ViewModels
         [JsonPropertyName("Email")]
         [Required(ErrorMessage = "Email must be supplied")]
         public string Email { get; set; }
-
-        [JsonPropertyName("Role")]
-        public string? Role { get; set; }
-        [JsonPropertyName("IsActive")]
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; }
+        public string Role { get; set; } = "User";
     }
 }

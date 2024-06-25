@@ -13,18 +13,18 @@ namespace ZooTracker.Models.Entity
     [Table("ZooAddress", Schema = "Zoo")]
     public class ZooAddress
     {
-        public ZooAddress() { }
+        //public ZooAddress() { }
 
-        public ZooAddress(ZooAddressVM zooAddressVM)  //not updating created and createby since those dont matter after initial creation
-        {
-            this.Id = zooAddressVM.Id ?? 0;
-            this.Street1 = zooAddressVM.Street1;
-            this.Street2 = zooAddressVM.Street2;
-            this.City = zooAddressVM.City;
-            this.State = zooAddressVM.State;
-            this.Zip = zooAddressVM.Zip;
-            this.IsActive = zooAddressVM.IsActive;
-        }
+        //public ZooAddress(ZooAddressVM zooAddressVM)  //not updating created and createby since those dont matter after initial creation
+        //{
+        //    this.Id = zooAddressVM.Id ?? 0;
+        //    this.Street1 = zooAddressVM.Street1;
+        //    this.Street2 = zooAddressVM.Street2;
+        //    this.City = zooAddressVM.City;
+        //    this.State = zooAddressVM.State;
+        //    this.Zip = zooAddressVM.Zip;
+        //    this.IsActive = zooAddressVM.IsActive;
+        //}
 
         [Key]
         public int Id { get; set; }
@@ -48,7 +48,7 @@ namespace ZooTracker.Models.Entity
         public int ZooId {  get; set; }
 
         [ForeignKey("ZooId")]
-        public Zoo Zoo { get; set; }
+        public virtual Zoo Zoo { get; set; }
         #endregion
     }
 }

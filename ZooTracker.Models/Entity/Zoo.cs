@@ -16,21 +16,21 @@ namespace ZooTracker.Models.Entity
     [Index(nameof(Zoo.Name),IsUnique = true)]
     public class Zoo
     {
-        public Zoo() { }
+        //public Zoo() { }
 
-        public Zoo(ZooVM zooVM) 
-        { 
-            Name = zooVM.Name;
-            MainAttraction = zooVM.MainAttraction;
-            TicketCost = zooVM.TicketCost;
-            ChildTicket = zooVM.ChildTicket;
-            SeniorTicket = zooVM.SeniorTicket;
-            IsActive = zooVM.IsActive;
-            CreatedBy = zooVM.CreatedBy;
-            CreatedDate = zooVM.CreatedDate;
-            Address = new ZooAddress(zooVM.Address);
-            OpenDaysHours = new List<OpenDaysHours>(zooVM.OpenDaysHours.Select(x => new OpenDaysHours(x)));
-        }
+        //public Zoo(ZooVM zooVM) 
+        //{ 
+        //    Name = zooVM.Name;
+        //    MainAttraction = zooVM.MainAttraction;
+        //    TicketCost = zooVM.TicketCost;
+        //    ChildTicket = zooVM.ChildTicket;
+        //    SeniorTicket = zooVM.SeniorTicket;
+        //    IsActive = zooVM.IsActive;
+        //    CreatedBy = zooVM.CreatedBy;
+        //    CreatedDate = zooVM.CreatedDate ?? DateTime.UtcNow;
+        //    Address = new ZooAddress(zooVM.Address);
+        //    OpenDaysHours = new List<OpenDaysHours>(zooVM.OpenDaysHours.Select(x => new OpenDaysHours(x)));
+        //}
 
 
         [Key]
@@ -52,9 +52,9 @@ namespace ZooTracker.Models.Entity
         [Required]
         public string CreatedBy { get; set; }
 
-        [Required]
-        public ZooAddress Address { get; set; }
-        [Required]
-        public List<OpenDaysHours> OpenDaysHours { get; set; }
+
+        public ZooAddress? Address { get; set; } = new ZooAddress();
+
+        public List<OpenDaysHours>? OpenDaysHours { get; set; } = new List<OpenDaysHours> { };
     }
 }

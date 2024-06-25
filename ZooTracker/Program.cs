@@ -12,18 +12,22 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using ZooTracker.Utility.IRepo;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+//    .AddJsonOptions(options =>
+//{
+//    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+//    options.JsonSerializerOptions.WriteIndented = true; // Optional, for better readability of JSON
+//});
 var connString = builder.Configuration.GetConnectionString("DefaultConn") ?? throw new InvalidOperationException("no connection string defined");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connString)
 );
-//builder.Services.AddIdentity
-//builder.Services.AddIdentityCore<ApplicationUser>()
 
 builder.Services.AddIdentityApiEndpoints<ApplicationUser>(options =>
     {
