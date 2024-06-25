@@ -21,8 +21,11 @@ namespace ZooTracker.Models.Entity
             TicketCost = zooVM.TicketCost;
             ChildTicket = zooVM.ChildTicket;
             SeniorTicket = zooVM.SeniorTicket;
-            Address = new ZooAddress(zooVM.Address);
-            OpenDaysHours = new List<OpenDaysHours>(zooVM.OpenDaysHours.Select(x => new OpenDaysHours(x)));
+            IsActive = zooVM.IsActive;
+            CreatedBy = zooVM.CreatedBy;
+            CreatedDate = zooVM.CreatedDate ?? DateTime.UtcNow;
+            //Address = new ZooAddress(zooVM.Address);
+            //OpenDaysHours = new List<OpenDaysHours>(zooVM.OpenDaysHours.Select(x => new OpenDaysHours(x)));
         }
 
 
@@ -35,9 +38,18 @@ namespace ZooTracker.Models.Entity
         public double TicketCost {  get; set; }
         public double? ChildTicket {  get; set; }
         public double? SeniorTicket {  get; set; }
+
         [Required]
-        public ZooAddress Address { get; set; }
+        public bool IsActive { get; set; } = true;
+
         [Required]
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+
+        [Required]
+        public string CreatedBy { get; set; }
+
+        public ZooAddress Address { get; set; } 
+
         public List<OpenDaysHours> OpenDaysHours { get; set; }
     }
 }

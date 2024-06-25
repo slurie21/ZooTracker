@@ -22,7 +22,10 @@ namespace ZooTracker.Models.ViewModels
             TicketCost = zoo.TicketCost;
             ChildTicket = zoo.ChildTicket;
             SeniorTicket = zoo.SeniorTicket;
-            if(!onlyZoo)
+            IsActive = zoo.IsActive;
+            CreatedBy = zoo.CreatedBy;
+            CreatedDate = zoo.CreatedDate;
+            if (!onlyZoo)
             {
                 Address = new ZooAddressVM(zoo.Address);
                 OpenDaysHours = new List<OpenDaysHoursVM>(zoo.OpenDaysHours.Select(x => new OpenDaysHoursVM(x))); ;
@@ -40,6 +43,11 @@ namespace ZooTracker.Models.ViewModels
         public double TicketCost { get; set; }
         public double? ChildTicket { get; set; }
         public double? SeniorTicket { get; set; }
+        public bool IsActive { get; set; } = true;
+
+        public DateTime? CreatedDate { get; set; }
+
+        public string? CreatedBy { get; set; }
         [Required(ErrorMessage ="Zoo Must Have an address")]
         public ZooAddressVM Address { get; set; } 
         [Required(ErrorMessage ="Zoo must have opening and closing times")]
