@@ -46,12 +46,46 @@ namespace ZooTracker.Controllers
         }
 
         [HttpGet("allzoos")]
-        public async Task<IActionResult> GetAllZoos(string includeProperties = "OpenDaysHours")
+        public async Task<IActionResult> GetAllZoos(string includeProperties = "Address,OpenDaysHours")
         {
             var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email) ?? "User Email not found";
             _logger.LogInformation($"{userEmail} searched for all zoos");
-            var zoos = _unitOfWork.Zoos.GetAll(includeProperties);
-            return Ok(zoos);
+            var zoos = _unitOfWork.Zoos.GetAll(includeProperties).Where(x => x.IsActive == true);
+            var zooList = zoos.Select(z => new ZooVM
+            {
+                Id = z.Id,
+                Name = z.Name,
+                MainAttraction = z.MainAttraction,
+                TicketCost = z.TicketCost,
+                ChildTicket = z.ChildTicket,
+                SeniorTicket = z.SeniorTicket,
+                IsActive = z.IsActive,
+                CreatedDate = z.CreatedDate,
+                CreatedBy = z.CreatedBy,
+                Address = new ZooAddressVM
+                {
+                    Id = z.Address.Id,
+                    Street1 = z.Address.Street1,
+                    Street2 = z.Address.Street2,
+                    City = z.Address.City,
+                    State = z.Address.State,
+                    Zip = z.Address.Zip,
+                    Created = z.Address.Created,
+                    CreateBy = z.Address.CreateBy,
+                    IsActive = z.Address.IsActive,
+                    ZooId = z.Address.ZooId
+                },
+                OpenDaysHours = z.OpenDaysHours.Select(odh => new OpenDaysHoursVM
+                {
+                    Id = odh.Id,
+                    DayOfWeek = odh.DayOfWeek,
+                    IsOpen = odh.IsOpen,
+                    OpenTime = odh.OpenTime,
+                    CloseTime = odh.CloseTime,
+                    ZooId = odh.ZooId
+                }).ToList()
+            }).ToList();
+            return Ok(zooList);
         }
     }
 }

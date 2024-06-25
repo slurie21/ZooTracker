@@ -48,7 +48,7 @@ namespace ZooTracker.Models.Entity
         [Required]
         public string CreatedBy { get; set; }
 
-        public ZooAddress Address { get; set; } 
+        public ZooAddress Address { get; set; } = new ZooAddress();
 
         public List<OpenDaysHours> OpenDaysHours { get; set; }
     }
