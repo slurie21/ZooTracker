@@ -24,8 +24,8 @@ namespace ZooTracker.Models.Entity
             IsActive = zooVM.IsActive;
             CreatedBy = zooVM.CreatedBy;
             CreatedDate = zooVM.CreatedDate ?? DateTime.UtcNow;
-            //Address = new ZooAddress(zooVM.Address);
-            //OpenDaysHours = new List<OpenDaysHours>(zooVM.OpenDaysHours.Select(x => new OpenDaysHours(x)));
+            Address = new ZooAddress(zooVM.Address);
+            OpenDaysHours = new List<OpenDaysHours>(zooVM.OpenDaysHours.Select(x => new OpenDaysHours(x)));
         }
 
 

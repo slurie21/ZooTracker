@@ -33,7 +33,7 @@ namespace ZooTracker.Controllers
             var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email) ?? "User Email not found"; 
             Zoo zoo = new Zoo(zooVM);
             zoo.CreatedBy = userEmail;
-            zoo.CreatedDate = DateTime.UtcNow;
+            //zoo.CreatedDate = DateTime.UtcNow;
             zoo.Address.Created = DateTime.UtcNow;
             zoo.Address.CreateBy = userEmail;
             
