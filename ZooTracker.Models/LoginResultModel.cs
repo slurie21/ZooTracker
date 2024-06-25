@@ -20,7 +20,8 @@ namespace ZooTracker.Models
                 Fname = user.Fname,
                 Lname = user.Lname,
                 Email = user.Email ?? "",
-                Id = user.Id
+                Id = user.Id,
+                IsActive = user.IsActive
             };
             Token = token;
             RefreshToken = refreshToken;

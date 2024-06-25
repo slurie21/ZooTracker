@@ -91,7 +91,7 @@ namespace ZooTracker.Controllers
 
         [HttpPost("archive/{userID}")]
         [GetGuidForLogging]
-        [Admin_ValidateUserIdFilter]
+        //[Admin_ValidateUserIdFilter]
         public async Task<IActionResult> Inactivate(string userID)
         {
             string loggedInUser = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;

@@ -38,6 +38,7 @@ namespace ZooTracker.Models.ViewModels
 
         [JsonPropertyName("Role")]
         public string? Role { get; set; }
+        [JsonPropertyName("IsActive")]
         public bool IsActive { get; set; } = true;
     }
 }
