@@ -17,6 +17,7 @@ namespace ZooTracker.Models.ViewModels
             this.Fname = user.Fname;
             this.Lname = user.Lname;
             this.Email = user.Email;
+            this.IsActive = user.IsActive;
         }
 
         public string? Id { get; set; }
@@ -27,6 +28,7 @@ namespace ZooTracker.Models.ViewModels
         public string Lname { get; set; }
         [Required(ErrorMessage = "Email must be supplied")]
         public string Email { get; set; }
+        public bool IsActive { get; set; }
         public string Role { get; set; } = "User";
     }
 }

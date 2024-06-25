@@ -49,8 +49,8 @@ namespace ZooTracker.Models.ViewModels
 
         public string? CreatedBy { get; set; }
         [Required(ErrorMessage ="Zoo Must Have an address")]
-        public ZooAddressVM Address { get; set; } 
+        public virtual ZooAddressVM Address { get; set; } 
         [Required(ErrorMessage ="Zoo must have opening and closing times")]
-        public List<OpenDaysHoursVM> OpenDaysHours { get; set; } 
+        public virtual List<OpenDaysHoursVM> OpenDaysHours { get; set; } = new List<OpenDaysHoursVM>();
     }
 }

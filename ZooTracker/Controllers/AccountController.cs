@@ -98,11 +98,61 @@ namespace ZooTracker.Controllers
                         Fname = user.Fname,
                         Lname = user.Lname,
                         Id = user.Id,
+                        IsActive = user.IsActive,
                         Role = role.FirstOrDefault() ?? "User"
                     }
                 ); 
             }
             return Ok(userVMs);
+        }
+
+        [HttpPost("archive/{userID}")]
+        [GetGuidForLogging]
+        public async Task<IActionResult> Inactivate(string userID)
+        {
+            string loggedInUser = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+            string correlationID = HttpContext.Items["correlationID"].ToString() ?? "";
+            _logger.LogInformation($"attempting to inactivate User id: {userID}");
+
+            var userToInactivate = await _userManager.FindByIdAsync(userID);
+
+            if (userToInactivate != null)
+            {
+                userToInactivate.IsActive = false;
+                userToInactivate.DeletedAt = DateTime.Now;
+
+                var result = await _userManager.UpdateAsync(userToInactivate);
+
+                if (User.Identity != null)
+                {
+                    if (result.Succeeded)
+                    {
+                        await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { Area = "Account", Note = $"{loggedInUser} archived user {userToInactivate.UserName}", CorrelationID = correlationID });
+                        await _unitOfWork.Save();
+                        _logger.LogInformation($"Successfully inactivated User id: {userID}");
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { Area = "Account", Note = $"Failure of {loggedInUser} to archive user {userToInactivate.UserName}", CorrelationID = correlationID });
+                        await _unitOfWork.Save();
+                        _logger.LogError($"Failed to archived User id: {userID}");
+                        ModelState.AddModelError("", "Error Deleting User.  Please try again");
+                    }
+                }
+                else
+                {
+                    //TODO - should this be an exception or notfoundobjectresults
+                    return BadRequest("Requesting User is not found in system");
+                }
+            }
+            else
+            {
+                //errorcheck here for null userToInactivate
+                //TODO - should this be an exception or notfoundobjectresults
+                return BadRequest("User to inactivate is not found in system");
+            }
+            return Ok($"User {userID} has been inactivated");
         }
 
     }

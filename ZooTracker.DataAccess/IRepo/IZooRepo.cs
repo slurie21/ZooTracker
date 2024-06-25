@@ -10,6 +10,5 @@ namespace ZooTracker.DataAccess.IRepo
 {
     public interface IZooRepo : IRepository<Zoo>
     {
-
     }
 }
