@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZooTracker.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace ZooTracker.DataAccess
 {
@@ -19,6 +21,7 @@ namespace ZooTracker.DataAccess
         public IZooRepo Zoos {  get; private set; }
         public IAddressRepo Address { get; private set; }
         public IOpenDaysHoursRepo OpenDaysHours { get; private set; }
+        public IUserVMRepo UserVM { get; private set; }
 
         public UnitOfWork(AppDbContext db)
         {
@@ -29,11 +32,14 @@ namespace ZooTracker.DataAccess
             Zoos = new ZooRepo(_db);
             Address = new AddressRepo(_db);
             OpenDaysHours = new OpenDaysHoursRepo(_db);
+            UserVM = new UserVMRepo(_db);
         }
 
         public async Task Save()
         {
             await _db.SaveChangesAsync();
         }
+
+        
     }
 }

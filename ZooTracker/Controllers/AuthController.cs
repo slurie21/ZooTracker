@@ -118,7 +118,7 @@ namespace ZooTracker.Controllers
                 return BadRequest("Invalid refresh token");
             }
 
-            var refreshTokenObj = _unitOfWork.JwtRefreshToken.Get(t => t.Token.Equals(refreshToken));
+            var refreshTokenObj = await _unitOfWork.JwtRefreshToken.Get(t => t.Token.Equals(refreshToken));
              if (refreshTokenObj == null)
             {
                 return BadRequest("Invalid refresh token.");

@@ -4,8 +4,8 @@ namespace ZooTracker.DataAccess.IRepo
 {
     public interface IRepository<T> where T : class
     {
-        IEnumerable<T> GetAll(string? includeProperties = null);
-        T Get(Expression<Func<T, bool>> filter, string? includeProperties = null);
+        Task<IEnumerable<T>> GetAll(string? includeProperties = null);
+        Task<T> Get(Expression<Func<T, bool>> filter, string? includeProperties = null);
         Task<bool> Add(T entity);
         Task<bool> Update(T entity);
         Task<bool> Remove(T entity);

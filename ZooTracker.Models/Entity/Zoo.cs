@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -9,7 +11,9 @@ using ZooTracker.Models.ViewModels;
 
 namespace ZooTracker.Models.Entity
 {
+    
     [Table("Zoos",Schema ="Zoo")]
+    [Index(nameof(Zoo.Name),IsUnique = true)]
     public class Zoo
     {
         //public Zoo() { }
@@ -47,6 +51,7 @@ namespace ZooTracker.Models.Entity
 
         [Required]
         public string CreatedBy { get; set; }
+
 
         public ZooAddress? Address { get; set; } = new ZooAddress();
 

@@ -1,14 +1,13 @@
-﻿using ZooTracker.Filters.ActionFilters;
-using ZooTracker.Models.ViewModels;
-using ZooTracker.Models.Entity;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ZooTracker.DataAccess.IRepo;
-using System.Security.Claims;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using ZooTracker.DataAccess.Context;
+using ZooTracker.DataAccess.IRepo;
+using ZooTracker.Filters.ActionFilters;
+using ZooTracker.Models.Entity;
+using ZooTracker.Models.ViewModels;
 
 namespace ZooTracker.Controllers
 {
@@ -36,7 +35,7 @@ namespace ZooTracker.Controllers
         public async Task<IActionResult> Register([FromBody] RegistrationVM registrationVM)
         {
             //need first check to be if role is going to be admin and then make sure that the user is an admin.
-            if (registrationVM.Role.Equals("Admin", StringComparison.InvariantCultureIgnoreCase))
+            if (!string.IsNullOrEmpty(registrationVM.Role) && registrationVM.Role.Equals("Admin", StringComparison.InvariantCultureIgnoreCase))
             {
                 string userId = User.FindFirstValue("userID") ?? "0";
                 if (userId == null || userId == "0") {
@@ -86,74 +85,58 @@ namespace ZooTracker.Controllers
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> GetUsers()
         {
-            var users = await _userManager.Users.ToListAsync();
-            List<UserVM> userVMs = new List<UserVM>();
-            foreach(var user in users)
-            {
-                var role = await _userManager.GetRolesAsync(user);
-                userVMs.Add(
-                    new UserVM
-                    {
-                        Email = user.Email,
-                        Fname = user.Fname,
-                        Lname = user.Lname,
-                        Id = user.Id,
-                        IsActive = user.IsActive,
-                        Role = role.FirstOrDefault() ?? "User"
-                    }
-                ); 
-            }
-            return Ok(userVMs);
+            var users = await _unitOfWork.UserVM.GetUserVMsWithRole();
+            return Ok(users);
         }
 
         [HttpPost("archive/{userID}")]
-        [GetGuidForLogging]
-        public async Task<IActionResult> Inactivate(string userID)
+[GetGuidForLogging]
+public async Task<IActionResult> Inactivate(string userID)
+{
+    string loggedInUser = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+    string correlationID = HttpContext.Items["correlationID"].ToString() ?? "";
+    _logger.LogInformation($"attempting to inactivate User id: {userID}");
+
+    var userToInactivate = await _userManager.FindByIdAsync(userID);
+
+    if (userToInactivate != null)
+    {
+        userToInactivate.IsActive = false;
+        userToInactivate.DeletedAt = DateTime.Now;
+
+        var result = await _userManager.UpdateAsync(userToInactivate);
+
+        if (User.Identity != null)
         {
-            string loggedInUser = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-            string correlationID = HttpContext.Items["correlationID"].ToString() ?? "";
-            _logger.LogInformation($"attempting to inactivate User id: {userID}");
-
-            var userToInactivate = await _userManager.FindByIdAsync(userID);
-
-            if (userToInactivate != null)
+            if (result.Succeeded)
             {
-                userToInactivate.IsActive = false;
-                userToInactivate.DeletedAt = DateTime.Now;
-
-                var result = await _userManager.UpdateAsync(userToInactivate);
-
-                if (User.Identity != null)
-                {
-                    if (result.Succeeded)
-                    {
-                        await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { Area = "Account", Note = $"{loggedInUser} archived user {userToInactivate.UserName}", CorrelationID = correlationID });
-                        await _unitOfWork.Save();
-                        _logger.LogInformation($"Successfully inactivated User id: {userID}");
-                        return Ok(result);
-                    }
-                    else
-                    {
-                        await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { Area = "Account", Note = $"Failure of {loggedInUser} to archive user {userToInactivate.UserName}", CorrelationID = correlationID });
-                        await _unitOfWork.Save();
-                        _logger.LogError($"Failed to archived User id: {userID}");
-                        ModelState.AddModelError("", "Error Deleting User.  Please try again");
-                    }
-                }
-                else
-                {
-                    //TODO - should this be an exception or notfoundobjectresults
-                    return BadRequest("Requesting User is not found in system");
-                }
+                await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { Area = "Account", Note = $"{loggedInUser} archived user {userToInactivate.UserName}", CorrelationID = correlationID });
+                await _unitOfWork.Save();
+                _logger.LogInformation($"Successfully inactivated User id: {userID}");
+                return Ok(result);
             }
             else
             {
-                //errorcheck here for null userToInactivate
-                //TODO - should this be an exception or notfoundobjectresults
-                return BadRequest("User to inactivate is not found in system");
+                await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { Area = "Account", Note = $"Failure of {loggedInUser} to archive user {userToInactivate.UserName}", CorrelationID = correlationID });
+                await _unitOfWork.Save();
+                _logger.LogError($"Failed to archived User id: {userID}");
+                ModelState.AddModelError("", "Error Deleting User.  Please try again");
             }
-            return Ok($"User {userID} has been inactivated");
         }
-
+        else
+        {
+            //TODO - should this be an exception or notfoundobjectresults
+            return BadRequest("Requesting User is not found in system");
+        }
     }
+    else
+    {
+        //errorcheck here for null userToInactivate
+        //TODO - should this be an exception or notfoundobjectresults
+        return BadRequest("User to inactivate is not found in system");
+    }
+    return Ok($"User {userID} has been inactivated");
+
+
+    
 }

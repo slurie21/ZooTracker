@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZooTracker.DataAccess.Context;
 
@@ -11,9 +12,11 @@ using ZooTracker.DataAccess.Context;
 namespace ZooTracker.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240625002702_AddIsActivetoZoo")]
+    partial class AddIsActivetoZoo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -301,7 +304,7 @@ namespace ZooTracker.DataAccess.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("JwtRefresh", (string)null);
+                    b.ToTable("JwtRefresh");
                 });
 
             modelBuilder.Entity("ZooTracker.Models.Entity.JwtBlacklistToken", b =>
@@ -332,7 +335,7 @@ namespace ZooTracker.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JwtBlacklistToken", (string)null);
+                    b.ToTable("JwtBlacklistToken");
                 });
 
             modelBuilder.Entity("ZooTracker.Models.Entity.OpenDaysHours", b =>
@@ -377,13 +380,6 @@ namespace ZooTracker.DataAccess.Migrations
                     b.Property<double?>("ChildTicket")
                         .HasColumnType("float");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -392,7 +388,7 @@ namespace ZooTracker.DataAccess.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double?>("SeniorTicket")
                         .HasColumnType("float");
@@ -401,9 +397,6 @@ namespace ZooTracker.DataAccess.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Zoos", "Zoo");
                 });
@@ -424,7 +417,7 @@ namespace ZooTracker.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")

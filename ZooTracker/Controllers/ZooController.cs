@@ -31,6 +31,7 @@ namespace ZooTracker.Controllers
         {
             string correlationID = HttpContext.Items["correlationID"].ToString() ?? "";
             var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email) ?? "User Email not found"; 
+
             Zoo zoo = new Zoo();
             zoo.Name = zooVM.Name;
             zoo.MainAttraction = zooVM.MainAttraction;
@@ -39,7 +40,6 @@ namespace ZooTracker.Controllers
             zoo.SeniorTicket = zooVM.SeniorTicket;
             zoo.IsActive = zooVM.IsActive;
             zoo.CreatedBy = userEmail;
-            //zoo.CreatedDate = DateTime.UtcNow;
             zoo.Address.Created = DateTime.UtcNow;
             zoo.Address.CreateBy = userEmail;
             
@@ -145,6 +145,7 @@ namespace ZooTracker.Controllers
             };
             return Ok(zooList);
         }
+
     }
 
 
