@@ -90,8 +90,8 @@ namespace ZooTracker.Controllers
         }
 
         [HttpPost("archive/{userID}")]
-        [Authorize(Roles = "Admin")]
         [GetGuidForLogging]
+        [Admin_ValidateUserIdFilter]
         public async Task<IActionResult> Inactivate(string userID)
         {
             string loggedInUser = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
@@ -111,16 +111,17 @@ namespace ZooTracker.Controllers
                 {
                     if (result.Succeeded)
                     {
-                        await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging {Area = "Account", Note = $"{loggedInUser} archived user {userToInactivate.UserName}", CreatedDate = DateTime.UtcNow, CorrelationID = correlationID });
-                        await _unitOfWork.Save();
+                        _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { App = "OrderEntryMangement", Area = "Admin", Note = $"{loggedInUser} archived user {userToInactivate.UserName}", CreatedDate = DateTime.UtcNow, CorrelationID = correlationID });
+                        _unitOfWork.Save();
                         _logger.LogInformation($"Successfully inactivated User id: {userID}");
                         return Ok(result);
                     }
                     else
                     {
-                        await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { Area = "Account", Note = $"Failure of {loggedInUser} to archive user {userToInactivate.UserName}", CreatedDate = DateTime.UtcNow, CorrelationID = correlationID });
-                        await _unitOfWork.Save();
+                        _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { App = "OrderEntryMangement", Area = "Admin", Note = $"Failure of {loggedInUser} to archive user {userToInactivate.UserName}", CreatedDate = DateTime.UtcNow, CorrelationID = correlationID });
+                        _unitOfWork.Save();
                         _logger.LogError($"Failed to archived User id: {userID}");
+                        ModelState.AddModelError("", "Error Deleting User.  Please try again");
                     }
                 }
                 else
