@@ -44,5 +44,7 @@ namespace ZooTracker.Models.ViewModels
         public string? CreateBy { get; set; }
 
         public bool IsActive { get; set; } = true;
+
+        public int? ZooId {  get; set; }
     }
 }

@@ -15,14 +15,14 @@ namespace ZooTracker.Filters.ActionFilters
         {
             _unitOfWork = unitOfWork;
         }   
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public override async void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
             var jti = context.HttpContext.User.FindFirstValue(JwtRegisteredClaimNames.Jti); //doesnt quite work.  need to get the value
             
             if (!string.IsNullOrEmpty(jti))
             {
-                var result = _unitOfWork.JwtBlacklistToken.Get(x => x.Jti == jti);
+                var result = await _unitOfWork.JwtBlacklistToken.Get(x => x.Jti == jti);
                 if (result != null)
                 {
                     context.Result = new UnauthorizedResult();
