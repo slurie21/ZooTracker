@@ -22,27 +22,41 @@ namespace ZooTracker.Models.ViewModels
             TicketCost = zoo.TicketCost;
             ChildTicket = zoo.ChildTicket;
             SeniorTicket = zoo.SeniorTicket;
+            IsActive = zoo.IsActive;
+            CreatedBy = zoo.CreatedBy;
+            CreatedDate = zoo.CreatedDate;
             if(!onlyZoo)
             {
-                Address = new ZooAddressVM(zoo.Address);
-                OpenDaysHours = new List<OpenDaysHoursVM>(zoo.OpenDaysHours.Select(x => new OpenDaysHoursVM(x))); ;
+                if(zoo.Address != null)
+                {
+                    Address = new ZooAddressVM(zoo.Address);
+                }
+                if(zoo.OpenDaysHours != null) 
+                {
+                    OpenDaysHours = new List<OpenDaysHoursVM>(zoo.OpenDaysHours.Select(x => new OpenDaysHoursVM(x))); ;
+                }
             }
-            
         }
 
 
         public int? Id { get; set; }
+
         [Required(ErrorMessage ="Zoo Name is required.")]
         [JsonPropertyName("ZooName")]
         public string Name { get; set; }
         public string? MainAttraction { get; set; }
+
         [Required(ErrorMessage ="You must enter a cost.  If free enter 0")]
         public double TicketCost { get; set; }
         public double? ChildTicket { get; set; }
         public double? SeniorTicket { get; set; }
-        [Required(ErrorMessage ="Zoo Must Have an address")]
-        public ZooAddressVM Address { get; set; } 
-        [Required(ErrorMessage ="Zoo must have opening and closing times")]
-        public List<OpenDaysHoursVM> OpenDaysHours { get; set; } 
+        public bool IsActive {  get; set; }
+       
+        public DateTime CreatedDate { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public ZooAddressVM? Address { get; set; } 
+        public List<OpenDaysHoursVM>? OpenDaysHours { get; set; } 
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZooTracker.DataAccess.Context;
 
@@ -11,9 +12,11 @@ using ZooTracker.DataAccess.Context;
 namespace ZooTracker.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240625004914_AddUniqueIndexZooName")]
+    partial class AddUniqueIndexZooName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -301,7 +304,7 @@ namespace ZooTracker.DataAccess.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("JwtRefresh", (string)null);
+                    b.ToTable("JwtRefresh");
                 });
 
             modelBuilder.Entity("ZooTracker.Models.Entity.JwtBlacklistToken", b =>
@@ -332,7 +335,7 @@ namespace ZooTracker.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JwtBlacklistToken", (string)null);
+                    b.ToTable("JwtBlacklistToken");
                 });
 
             modelBuilder.Entity("ZooTracker.Models.Entity.OpenDaysHours", b =>

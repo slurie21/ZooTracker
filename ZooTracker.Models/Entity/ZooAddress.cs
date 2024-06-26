@@ -37,18 +37,18 @@ namespace ZooTracker.Models.Entity
         public string State { get; set; }
         [Required]
         public string Zip { get; set; }
-
-        public DateTime Created { get; set; }
-
+        [Required]
+        public DateTime CreatedDate { get; set; }
+        [Required]
         public string CreateBy { get; set; }
-
+        [Required]
         public bool IsActive {  get; set; } 
 
         #region Navigation Properties
         public int ZooId {  get; set; }
 
-        [ForeignKey("ZooId")]
-        public Zoo Zoo { get; set; }
+        //[ForeignKey("ZooId")]
+        //public Zoo Zoo { get; set; }
         #endregion
     }
 }

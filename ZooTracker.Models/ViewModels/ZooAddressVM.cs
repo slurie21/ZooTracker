@@ -22,9 +22,10 @@ namespace ZooTracker.Models.ViewModels
             this.City = zooAddress.City;
             this.State = zooAddress.State;
             this.Zip = zooAddress.Zip;
-            this.Created = zooAddress.Created;
+            this.CreatedDate = zooAddress.CreatedDate;
             this.CreateBy = zooAddress.CreateBy;
             this.IsActive = zooAddress.IsActive;
+            this.ZooId = zooAddress.ZooId;
 
         }
 
@@ -39,10 +40,12 @@ namespace ZooTracker.Models.ViewModels
         [Required]
         public string Zip { get; set; }
 
-        public DateTime? Created { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
         public string? CreateBy { get; set; }
 
         public bool IsActive { get; set; } = true;
+
+        public int? ZooId {  get; set; }
     }
 }

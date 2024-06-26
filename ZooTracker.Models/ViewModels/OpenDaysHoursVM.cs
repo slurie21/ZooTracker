@@ -27,6 +27,8 @@ namespace ZooTracker.Models.ViewModels
         public string DayOfWeek {  get; set; }
         [Required]
         public bool IsOpen {  get; set; }
+
+        public int? ZooId {  get; set; }
         
         public TimeOnly? OpenTime { get; set; }
 

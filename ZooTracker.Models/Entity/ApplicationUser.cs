@@ -13,6 +13,7 @@ namespace ZooTracker.Models.Entity
     public class ApplicationUser : IdentityUser
     {
 
+
         public ApplicationUser() { }
 
         public ApplicationUser(UserVM userVM) 
@@ -45,7 +46,7 @@ namespace ZooTracker.Models.Entity
                 Email = this.Email,
                 Fname = this.Fname,
                 Lname = this.Lname,
-                Id = this.Id
+                Id = this.Id,
             };
         }
 
