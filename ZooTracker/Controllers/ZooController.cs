@@ -48,96 +48,19 @@ namespace ZooTracker.Controllers
         {
             var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email) ?? "User Email not found";
             _logger.LogInformation($"{userEmail} searched for all zoos");
-            var zoosList = new List<Zoo>();
+            var zoosList = (_unitOfWork.Zoos.GetAll(includeProperties)).Select(x => new ZooVM(x));
             if (!includeInactive)
             {
-                List<Zoo> zoos = (List<Zoo>)await _unitOfWork.Zoos.GetAll(includeProperties);
-                zoosList = zoos.Where(x => x.IsActive == true).ToList();
+                return Ok(zoosList.Where(x => x.IsActive == true));
             }
-            else
-            {
-                List<Zoo> zoos = (List<Zoo>)await _unitOfWork.Zoos.GetAll(includeProperties);
-                zoosList = zoos;
-            }
-
-            var zooList = zoosList.Select(z => new ZooVM
-            {
-                Id = z.Id,
-                Name = z.Name,
-                MainAttraction = z.MainAttraction,
-                TicketCost = z.TicketCost,
-                ChildTicket = z.ChildTicket,
-                SeniorTicket = z.SeniorTicket,
-                IsActive = z.IsActive,
-                CreatedDate = z.CreatedDate,
-                CreatedBy = z.CreatedBy,
-                Address = new ZooAddressVM
-                {
-                    Id = z.Address.Id,
-                    Street1 = z.Address.Street1,
-                    Street2 = z.Address.Street2,
-                    City = z.Address.City,
-                    State = z.Address.State,
-                    Zip = z.Address.Zip,
-                    CreatedDate = z.Address.CreatedDate,
-                    CreateBy = z.Address.CreateBy,
-                    IsActive = z.Address.IsActive,
-                    ZooId = z.Address.ZooId
-                },
-                OpenDaysHours = z.OpenDaysHours.Select(odh => new OpenDaysHoursVM
-                {
-
-                    Id = odh.Id,
-                    DayOfWeek = odh.DayOfWeek,
-                    IsOpen = odh.IsOpen,
-                    OpenTime = odh.OpenTime,
-                    CloseTime = odh.CloseTime,
-                    ZooId = odh.ZooId
-                }).ToList()
-            }).ToList();
-            return Ok(zooList);
+            return Ok(zoosList);
         }
 
         [HttpGet("zoo/{id}")]
         public async Task<IActionResult> GetZoo(int id, string includeProperties = "Address,OpenDaysHours")
         {
-            var zoo = await _unitOfWork.Zoos.Get(x => x.Id == id, includeProperties);
-            var zooList = new ZooVM
-            {
-                Id = zoo.Id,
-                Name = zoo.Name,
-                MainAttraction = zoo.MainAttraction,
-                TicketCost = zoo.TicketCost,
-                ChildTicket = zoo.ChildTicket,
-                SeniorTicket = zoo.SeniorTicket,
-                IsActive = zoo.IsActive,
-                CreatedDate = zoo.CreatedDate,
-                CreatedBy = zoo.CreatedBy,
-                Address = new ZooAddressVM
-                {
-                    Id = zoo.Address.Id,
-                    Street1 = zoo.Address.Street1,
-                    Street2 = zoo.Address.Street2,
-                    City = zoo.Address.City,
-                    State = zoo.Address.State,
-                    Zip = zoo.Address.Zip,
-                    CreatedDate = zoo.Address.CreatedDate,
-                    CreateBy = zoo.Address.CreateBy,
-                    IsActive = zoo.Address.IsActive,
-                    ZooId = zoo.Address.ZooId
-                },
-                OpenDaysHours = zoo.OpenDaysHours.Select(odh => new OpenDaysHoursVM
-                {
-
-                    Id = odh.Id,
-                    DayOfWeek = odh.DayOfWeek,
-                    IsOpen = odh.IsOpen,
-                    OpenTime = odh.OpenTime,
-                    CloseTime = odh.CloseTime,
-                    ZooId = odh.ZooId
-                }).ToList()
-            };
-            return Ok(zooList);
+            var zoo = (_unitOfWork.Zoos.Get(x => x.Id == id, includeProperties));
+            return Ok(zoo);
         }
 
     }

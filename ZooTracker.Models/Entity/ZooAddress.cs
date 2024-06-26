@@ -47,8 +47,8 @@ namespace ZooTracker.Models.Entity
         #region Navigation Properties
         public int ZooId {  get; set; }
 
-        [ForeignKey("ZooId")]
-        public Zoo Zoo { get; set; }
+        //[ForeignKey("ZooId")]
+        //public Zoo Zoo { get; set; }
         #endregion
     }
 }

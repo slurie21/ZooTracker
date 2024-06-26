@@ -25,6 +25,7 @@ namespace ZooTracker.Models.ViewModels
             this.CreatedDate = zooAddress.CreatedDate;
             this.CreateBy = zooAddress.CreateBy;
             this.IsActive = zooAddress.IsActive;
+            this.ZooId = zooAddress.ZooId;
 
         }
 

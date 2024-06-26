@@ -27,10 +27,15 @@ namespace ZooTracker.Models.ViewModels
             CreatedDate = zoo.CreatedDate;
             if(!onlyZoo)
             {
-                Address = new ZooAddressVM(zoo.Address);
-                OpenDaysHours = new List<OpenDaysHoursVM>(zoo.OpenDaysHours.Select(x => new OpenDaysHoursVM(x))); ;
+                if(zoo.Address != null)
+                {
+                    Address = new ZooAddressVM(zoo.Address);
+                }
+                if(zoo.OpenDaysHours != null) 
+                {
+                    OpenDaysHours = new List<OpenDaysHoursVM>(zoo.OpenDaysHours.Select(x => new OpenDaysHoursVM(x))); ;
+                }
             }
-            
         }
 
 
@@ -51,9 +56,7 @@ namespace ZooTracker.Models.ViewModels
 
         public string CreatedBy { get; set; }
 
-        [Required(ErrorMessage ="Zoo Must Have an address")]
-        public ZooAddressVM Address { get; set; } 
-        [Required(ErrorMessage ="Zoo must have opening and closing times")]
-        public List<OpenDaysHoursVM> OpenDaysHours { get; set; } 
+        public ZooAddressVM? Address { get; set; } 
+        public List<OpenDaysHoursVM>? OpenDaysHours { get; set; } 
     }
 }

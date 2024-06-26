@@ -31,9 +31,7 @@ builder.Services.AddIdentityApiEndpoints<ApplicationUser>(options =>
         options.SignIn.RequireConfirmedEmail = false;
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequiredLength = 1;
-    }
-
-    )
+    })
     .AddApiEndpoints()
     .AddRoles<IdentityRole>()
     .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<ApplicationUser, IdentityRole>>()
