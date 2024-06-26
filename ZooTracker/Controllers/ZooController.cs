@@ -16,9 +16,9 @@ namespace ZooTracker.Controllers
     {
 
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<AccountController> _logger;
+        private readonly ILogger<ZooController> _logger;
 
-        public ZooController(IUnitOfWork unitOfWork, ILogger<AccountController> logger)
+        public ZooController(IUnitOfWork unitOfWork, ILogger<ZooController> logger)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
