@@ -35,6 +35,10 @@ namespace ZooTracker.Controllers
         public async Task<IActionResult> Register([FromBody] RegistrationVM registrationVM)
         {
             //need first check to be if role is going to be admin and then make sure that the user is an admin.
+            if(registrationVM.Role == null)
+            {
+                registrationVM.Role = "User";
+            }
             if (!string.IsNullOrEmpty(registrationVM.Role) && registrationVM.Role.Equals("Admin", StringComparison.InvariantCultureIgnoreCase))
             {
                 string userId = User.FindFirstValue("userID") ?? "0";
@@ -111,15 +115,15 @@ namespace ZooTracker.Controllers
                 {
                     if (result.Succeeded)
                     {
-                        _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { App = "OrderEntryMangement", Area = "Admin", Note = $"{loggedInUser} archived user {userToInactivate.UserName}", CreatedDate = DateTime.UtcNow, CorrelationID = correlationID });
-                        _unitOfWork.Save();
+                        await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { App = "OrderEntryMangement", Area = "Admin", Note = $"{loggedInUser} archived user {userToInactivate.UserName}", CreatedDate = DateTime.UtcNow, CorrelationID = correlationID });
+                        await _unitOfWork.Save();
                         _logger.LogInformation($"Successfully inactivated User id: {userID}");
                         return Ok(result);
                     }
                     else
                     {
-                        _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { App = "OrderEntryMangement", Area = "Admin", Note = $"Failure of {loggedInUser} to archive user {userToInactivate.UserName}", CreatedDate = DateTime.UtcNow, CorrelationID = correlationID });
-                        _unitOfWork.Save();
+                        await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { App = "OrderEntryMangement", Area = "Admin", Note = $"Failure of {loggedInUser} to archive user {userToInactivate.UserName}", CreatedDate = DateTime.UtcNow, CorrelationID = correlationID });
+                        await _unitOfWork.Save();
                         _logger.LogError($"Failed to archived User id: {userID}");
                         ModelState.AddModelError("", "Error Deleting User.  Please try again");
                     }

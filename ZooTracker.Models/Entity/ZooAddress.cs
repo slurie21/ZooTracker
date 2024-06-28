@@ -17,7 +17,6 @@ namespace ZooTracker.Models.Entity
 
         public ZooAddress(ZooAddressVM zooAddressVM)  //not updating created and createby since those dont matter after initial creation
         {
-            this.Id = zooAddressVM.Id ?? 0;
             this.Street1 = zooAddressVM.Street1;
             this.Street2 = zooAddressVM.Street2;
             this.City = zooAddressVM.City;
