@@ -147,18 +147,18 @@ namespace ZooTracker.Controllers
         [HttpGet("checkUser")]
         public async Task<IActionResult> CheckUserStatus()
         {
-            ApplicationUser currentUser = new ApplicationUser();
+            var currentUser = new UserVM();
             var userID = HttpContext.User.FindFirstValue("userID");
             if (userID != null)
             {
-                currentUser = await _signInManager.UserManager.FindByIdAsync(userID);
+                currentUser = await _unitOfWork.UserVM.GetUserWithRole(userID); //await _signInManager.UserManager.FindByIdAsync(userID);
             }
             else
             {
                 return Forbid("Access Denied");
             }
 
-            return Ok(new { message = "Confirmed User", user = new UserVM(currentUser) });
+            return Ok(new { message = "Confirmed User", user = currentUser });
         }
 
     }

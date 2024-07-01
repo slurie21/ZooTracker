@@ -16,7 +16,6 @@ namespace ZooTracker.Models.Entity
 
         public OpenDaysHours(OpenDaysHoursVM openDaysHoursVM)
         {
-            this.Id = openDaysHoursVM.Id ?? 0;
             this.DayOfWeek = openDaysHoursVM.DayOfWeek;
             this.IsOpen = openDaysHoursVM.IsOpen;
             this.OpenTime = openDaysHoursVM.OpenTime;

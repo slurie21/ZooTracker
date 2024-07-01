@@ -50,11 +50,11 @@ namespace ZooTracker.Models.ViewModels
         public double TicketCost { get; set; }
         public double? ChildTicket { get; set; }
         public double? SeniorTicket { get; set; }
-        public bool IsActive {  get; set; }
+        public bool? IsActive {  get; set; }
        
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
-        public string CreatedBy { get; set; }
+        public string? CreatedBy { get; set; }
 
         public ZooAddressVM? Address { get; set; } 
         public List<OpenDaysHoursVM>? OpenDaysHours { get; set; } 

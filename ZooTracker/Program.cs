@@ -94,6 +94,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped<IJwtManager, JwtManager>(); //no reason for a new item each time
 builder.Services.AddScoped<IRoleSeeding, RoleSeeding>();
+builder.Services.AddScoped<IZooHelpers, ZooHelpers >();
 builder.Services.AddScoped<Auth_ConfirmJtiNotBlacklistedFilterAttribute>();
 
 var app = builder.Build();

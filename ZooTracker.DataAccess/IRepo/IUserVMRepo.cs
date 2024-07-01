@@ -10,5 +10,6 @@ namespace ZooTracker.DataAccess.IRepo
     public interface IUserVMRepo
     {
         Task<List<UserVM>> GetUserVMsWithRole();
+        Task<UserVM> GetUserWithRole(string userID);
     }
 }
