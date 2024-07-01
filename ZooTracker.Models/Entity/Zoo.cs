@@ -51,6 +51,8 @@ namespace ZooTracker.Models.Entity
 
         [Required]
         public string CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public string? ModifiedBy {  get; set; }
 
         [Required]
         public ZooAddress Address { get; set; }
