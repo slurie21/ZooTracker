@@ -35,6 +35,10 @@ namespace ZooTracker.Models.ViewModels
                 {
                     OpenDaysHours = new List<OpenDaysHoursVM>(zoo.OpenDaysHours.Select(x => new OpenDaysHoursVM(x))); ;
                 }
+                if (zoo.Animals != null)
+                {
+                    Animals = new List<ZooAnimalVM>(zoo.Animals.Select(x => new ZooAnimalVM(x)));
+                }
             }
         }
 
@@ -58,5 +62,6 @@ namespace ZooTracker.Models.ViewModels
 
         public ZooAddressVM? Address { get; set; } 
         public List<OpenDaysHoursVM>? OpenDaysHours { get; set; } 
+        public List<ZooAnimalVM>? Animals { get; set; }
     }
 }
