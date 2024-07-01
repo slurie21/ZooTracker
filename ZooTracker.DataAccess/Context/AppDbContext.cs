@@ -23,7 +23,7 @@ namespace ZooTracker.DataAccess.Context
         public DbSet<Zoo> Zoos { get; set; }
         public DbSet<ZooAddress> Address { get; set; }
         public DbSet<OpenDaysHours> OpenDaysHours { get; set; }
-
+        public DbSet<ZooAnimal> Animals { get; set; }
 
     }
 }
