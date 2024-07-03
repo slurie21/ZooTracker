@@ -23,7 +23,15 @@ namespace ZooTracker.DataAccess.Context
         public DbSet<Zoo> Zoos { get; set; }
         public DbSet<ZooAddress> Address { get; set; }
         public DbSet<OpenDaysHours> OpenDaysHours { get; set; }
+        public DbSet<ZooAnimal> Animal {  get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder); // Call the base class's method
 
+            modelBuilder.Entity<ZooAnimal>()
+                .HasIndex(za => new { za.Name, za.ZooId })
+                .IsUnique();
+        }
     }
 }
