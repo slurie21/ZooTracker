@@ -35,10 +35,13 @@ namespace ZooTracker.Controllers
         {
             string correlationID = HttpContext.Items["correlationID"].ToString() ?? "";
             var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email) ?? "User Email not found";
+            //zooVM.CreatedBy = userEmail;
+            //zooVM.CreatedDate = DateTime.UtcNow;
             Zoo zoo = new Zoo(zooVM);
             zoo.Address.CreatedDate = DateTime.UtcNow;
             zoo.CreatedBy = userEmail;
-            zoo.Address.CreateBy = userEmail;
+            zoo.Address.CreatedBy = userEmail;
+            zoo.Animals.ForEach(x => x.CreatedBy = userEmail);
 
             try
             {
@@ -57,7 +60,7 @@ namespace ZooTracker.Controllers
         }
 
         [HttpGet("allzoos")]
-        public async Task<IActionResult> GetAllZoos(string includeProperties = "Address,OpenDaysHours", bool includeInactive = false)
+        public async Task<IActionResult> GetAllZoos(string includeProperties = "Address,OpenDaysHours,Animals", bool includeInactive = false)
         {
             var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email) ?? "User Email not found";
             _logger.LogInformation($"{userEmail} searched for all zoos");
@@ -70,7 +73,7 @@ namespace ZooTracker.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetZoo(int id, string includeProperties = "Address,OpenDaysHours")
+        public async Task<IActionResult> GetZoo(int id, string includeProperties = "Address,OpenDaysHours,Animals")
         {
             var zoo = (_unitOfWork.Zoos.Get(x => x.Id == id, includeProperties));
             return Ok(zoo);
@@ -85,7 +88,7 @@ namespace ZooTracker.Controllers
             {
                 return BadRequest("Invalid ID");
             }
-
+            
             var zooToUpdate = _unitOfWork.Zoos.Get(x => x.Id == id);
 
             return Ok();

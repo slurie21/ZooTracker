@@ -39,50 +39,59 @@ namespace ZooTracker.Controllers
             {
                 registrationVM.Role = "User";
             }
-            if (!string.IsNullOrEmpty(registrationVM.Role) && registrationVM.Role.Equals("Admin", StringComparison.InvariantCultureIgnoreCase))
+            string userId = User.FindFirstValue("userID") ?? "0";
+            if (userId == null || userId == "0")
             {
-                string userId = User.FindFirstValue("userID") ?? "0";
-                if (userId == null || userId == "0") {
-                    return BadRequest("No user ID in token");
-                }
+                return BadRequest("No user ID in token");
+            }
 
-                ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
-                bool isAdmin = await  _userManager.IsInRoleAsync(currentUser, "Admin");
+            ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+            if (currentUser != null)
+            {
 
-                if (!isAdmin)
+
+                if (!string.IsNullOrEmpty(registrationVM.Role) && registrationVM.Role.Equals("Admin", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return Forbid("Only Admin can register admin");
+
+                    bool isAdmin = await _userManager.IsInRoleAsync(currentUser, "Admin");
+
+                    if (!isAdmin)
+                    {
+                        return Forbid("Only Admin can register admin");
+                    }
                 }
-            }
 
-            string correlationID = HttpContext.Items["correlationID"].ToString() ?? "";
+                string correlationID = HttpContext.Items["correlationID"].ToString() ?? "";
 
-            _logger.LogInformation($"Starting process of creating new user and assigning roles. Correlation ID: {correlationID}");
-            ApplicationUser newUser = new ApplicationUser(registrationVM);
-            
-            var createUserResult = await _userManager.CreateAsync(newUser, registrationVM.Password);
-            if (createUserResult.Succeeded)
-            {
-                registrationVM.Id = newUser.Id;
-                //Below is ok to leave because if adding Admin the user adding the new admin is already being confirmed
-                await _userManager.AddToRoleAsync(newUser, registrationVM.Role);  //Add user or Admin depending on whats passed through.
-                await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { App = "ZooTracker", Area = "Auth", Note = $"User {newUser.Fname + " " + newUser.Lname} has been created successfully.", CreatedDate = DateTime.UtcNow, CorrelationID = correlationID });
-                _logger.LogInformation($"New user {registrationVM.Fname + " " + registrationVM.Lname} created successfully.");
-            }
-            else
-            {
-                var errors = createUserResult.Errors.Select(e => e.Description);
-                var errorString = string.Join(", ", errors);
-                await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { App = "ZooTracker", Area = "Auth", Note = $"User {newUser.Fname + " " + newUser.Lname} has failed to be created.", StackTrace = errorString, CreatedDate = DateTime.UtcNow, CorrelationID = correlationID });
-                _logger.LogInformation($"User registration of {registrationVM.Fname + " " + registrationVM.Lname} had an issue.");
+                _logger.LogInformation($"Starting process of creating new user and assigning roles. Correlation ID: {correlationID}");
+                ApplicationUser newUser = new ApplicationUser(registrationVM);
+
+                var createUserResult = await _userManager.CreateAsync(newUser, registrationVM.Password);
+                if (createUserResult.Succeeded)
+                {
+                    registrationVM.Id = newUser.Id;
+                    //Below is ok to leave because if adding Admin the user adding the new admin is already being confirmed
+                    await _userManager.AddToRoleAsync(newUser, registrationVM.Role);  //Add user or Admin depending on whats passed through.
+                    await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { App = "ZooTracker", Area = "Auth", Note = $"User {newUser.Fname + " " + newUser.Lname} has been created successfully by {currentUser.Fname + " " + currentUser.Lname}.", CreatedDate = DateTime.UtcNow, CorrelationID = correlationID });
+                    _logger.LogInformation($"New user {registrationVM.Fname + " " + registrationVM.Lname} created successfully by {currentUser.Fname + " " + currentUser.Lname}.");
+                }
+                else
+                {
+                    var errors = createUserResult.Errors.Select(e => e.Description);
+                    var errorString = string.Join(", ", errors);
+                    await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { App = "ZooTracker", Area = "Auth", Note = $"User {newUser.Fname + " " + newUser.Lname} has failed to be created.", StackTrace = errorString, CreatedDate = DateTime.UtcNow, CorrelationID = correlationID });
+                    _logger.LogInformation($"User registration of {registrationVM.Fname + " " + registrationVM.Lname} had an issue.");
+                    await _unitOfWork.Save();
+                    return BadRequest(new { errors = createUserResult.Errors, user = registrationVM });
+                }
                 await _unitOfWork.Save();
-                return BadRequest(new { errors = createUserResult.Errors, user = registrationVM });
-            }
-            await _unitOfWork.Save();
 
-            //generate a token to send back to the user along with a refresh token
-            UserVM userVM = registrationVM.GetUserVM();
-            return Created(string.Empty, userVM);
+                //generate a token to send back to the user along with a refresh token
+                UserVM userVM = registrationVM.GetUserVM();
+                return Created(string.Empty, userVM);
+            }
+
+            return BadRequest("No user logged in");
         }
 
         [HttpGet("users")]

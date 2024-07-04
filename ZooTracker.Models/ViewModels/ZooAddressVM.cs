@@ -23,7 +23,7 @@ namespace ZooTracker.Models.ViewModels
             this.State = zooAddress.State;
             this.Zip = zooAddress.Zip;
             this.CreatedDate = zooAddress.CreatedDate;
-            this.CreateBy = zooAddress.CreateBy;
+            this.CreateBy = zooAddress.CreatedBy;
             this.IsActive = zooAddress.IsActive;
             this.ZooId = zooAddress.ZooId;
 

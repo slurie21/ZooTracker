@@ -45,12 +45,8 @@ namespace ZooTracker.Models.ViewModels
 
         public int? Id { get; set; }
 
-        [Required(ErrorMessage ="Zoo Name is required.")]
-        [JsonPropertyName("ZooName")]
         public string Name { get; set; }
         public string? MainAttraction { get; set; }
-
-        [Required(ErrorMessage ="You must enter a cost.  If free enter 0")]
         public double TicketCost { get; set; }
         public double? ChildTicket { get; set; }
         public double? SeniorTicket { get; set; }
@@ -59,6 +55,8 @@ namespace ZooTracker.Models.ViewModels
         public DateTime? CreatedDate { get; set; }
 
         public string? CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public string? ModifiedBy { get; set; }
 
         public ZooAddressVM? Address { get; set; } 
         public List<OpenDaysHoursVM>? OpenDaysHours { get; set; } 

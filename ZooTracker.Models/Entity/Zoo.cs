@@ -48,7 +48,7 @@ namespace ZooTracker.Models.Entity
         public bool IsActive { get; set; } = true;
 
         [Required]
-        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedDate { get; set; }
 
         [Required]
         public string CreatedBy { get; set; }

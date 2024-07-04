@@ -23,7 +23,7 @@ namespace ZooTracker.Models.Entity
             this.IsActive = zooAnimal.IsActive;
             this.Habitat = zooAnimal.Habitat;
             this.ZooId = zooAnimal.ZooId;
-            this.CreatedDate = zooAnimal.CreatedDate;
+            this.CreatedDate = zooAnimal.CreatedDate ?? DateTime.UtcNow;
             this.CreatedBy = zooAnimal.CreatedBy;
             this.ModifiedBy = zooAnimal.ModifiedBy;
             this.ModifiedDate = zooAnimal.ModifiedDate;
