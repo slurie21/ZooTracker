@@ -8,6 +8,7 @@ using ZooTracker.DataAccess.IRepo;
 using ZooTracker.Filters.ActionFilters;
 using ZooTracker.Models.Entity;
 using ZooTracker.Models.ViewModels;
+using ZooTracker.Utility.Interface;
 
 namespace ZooTracker.Controllers
 {
@@ -20,12 +21,14 @@ namespace ZooTracker.Controllers
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<ZooController> _logger;
-
+        private readonly IZooHelpers _zooHelpers;
         //TODO: Create an audit table for tracking changes
-        public ZooController(IUnitOfWork unitOfWork, ILogger<ZooController> logger)
+        public ZooController(IUnitOfWork unitOfWork, ILogger<ZooController> logger, IZooHelpers zooHelpers)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _zooHelpers = zooHelpers;
+            
         }
 
         [HttpPost("add")]
@@ -41,8 +44,12 @@ namespace ZooTracker.Controllers
             zoo.Address.CreatedDate = DateTime.UtcNow;
             zoo.CreatedBy = userEmail;
             zoo.Address.CreatedBy = userEmail;
-            zoo.Animals.ForEach(x => x.CreatedBy = userEmail);
-
+            zoo.Animals.ForEach(x =>
+                {
+                    x.CreatedBy = userEmail;
+                    x.TotalNum = x.FemaleNum + x.MaleNum;
+                }
+            );
             try
             {
                 await _unitOfWork.Zoos.Add(zoo);
@@ -88,13 +95,35 @@ namespace ZooTracker.Controllers
             {
                 return BadRequest("Invalid ID");
             }
-            
-            var zooToUpdate = _unitOfWork.Zoos.Get(x => x.Id == id);
+            var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email) ?? "User Email not found";
+            string correlationID = HttpContext.Items["correlationID"].ToString() ?? "";
 
-            return Ok();
+            var zooToUpdate = _unitOfWork.Zoos.Get(x => x.Id == id, "Address,OpenDaysHours,Animals");
+            if (zooToUpdate == null)
+            {
+                return BadRequest("No Zoo Found");
+            }
+            if (zoo.Id != zooToUpdate.Id)
+            {
+                return BadRequest("Check IDs of Zoo");
+            }            
+            try
+            {
+                _zooHelpers.UpdateZooFromVM(zooToUpdate, zoo, userEmail);
+                await _unitOfWork.Zoos.Update(zooToUpdate);
+                _logger.LogInformation($"Zoo: {zooToUpdate.Name} with ID: {zooToUpdate.Id} updated by {userEmail}");
+                await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { Area = "ZooController", Note = $"Zoo: {zooToUpdate.Name} with ID: {zooToUpdate.Id} updated by {userEmail}", CorrelationID = correlationID });
+                await _unitOfWork.Save();
+
+                return Ok($"Zoo {id} updated");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.InnerException.ToString());
+                await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { Area = "ZooController", Note = $"Error update Zoo: {zoo}", CorrelationID = correlationID });
+                await _unitOfWork.Save();
+                return BadRequest(ex.InnerException.ToString());
+            }
         }
-
-        
-
     }
 }

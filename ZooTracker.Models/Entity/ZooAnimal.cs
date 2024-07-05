@@ -15,11 +15,10 @@ namespace ZooTracker.Models.Entity
         public ZooAnimal() { }
         public ZooAnimal(ZooAnimalVM zooAnimal)
         {
-            this.Id = zooAnimal.Id;
             this.Name = zooAnimal.Name;
             this.FemaleNum = zooAnimal.FemaleNum;
             this.MaleNum = zooAnimal.MaleNum;
-            this.TotalNum = zooAnimal.TotalNum;
+            this.TotalNum = zooAnimal.FemaleNum + zooAnimal.MaleNum;
             this.IsActive = zooAnimal.IsActive;
             this.Habitat = zooAnimal.Habitat;
             this.ZooId = zooAnimal.ZooId;
