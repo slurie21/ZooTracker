@@ -22,6 +22,7 @@ namespace ZooTracker.DataAccess
         public IAddressRepo Address { get; private set; }
         public IOpenDaysHoursRepo OpenDaysHours { get; private set; }
         public IUserVMRepo UserVM { get; private set; }
+        public IAnimalRepo Animals { get; private set; }
 
         public UnitOfWork(AppDbContext db)
         {
@@ -33,6 +34,7 @@ namespace ZooTracker.DataAccess
             Address = new AddressRepo(_db);
             OpenDaysHours = new OpenDaysHoursRepo(_db);
             UserVM = new UserVMRepo(_db);
+            Animals = new AnimalRepo(_db);
         }
 
         public async Task Save()

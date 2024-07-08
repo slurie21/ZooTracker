@@ -16,6 +16,7 @@ namespace ZooTracker.DataAccess.IRepo
         IAddressRepo Address { get; }
         IOpenDaysHoursRepo OpenDaysHours { get; }
         IUserVMRepo UserVM { get; }
+        IAnimalRepo Animals { get; }
         Task Save();
         
         
