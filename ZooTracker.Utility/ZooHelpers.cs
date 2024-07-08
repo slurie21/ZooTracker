@@ -91,7 +91,14 @@ namespace ZooTracker.Utility
                     }
                 }
             }
-           
+            return zoo;
+        }
+
+        public Zoo UpdateModifiedFields(Zoo zoo, string modifiedBy)
+        {
+            zoo.ModifiedBy = modifiedBy;
+            zoo.ModifiedDate = DateTime.UtcNow;
+            zoo.Animals.ForEach(x => { x.ModifiedDate = DateTime.UtcNow; x.ModifiedBy = modifiedBy; });
             return zoo;
         }
     }

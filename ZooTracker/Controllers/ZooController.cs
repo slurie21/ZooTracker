@@ -28,7 +28,7 @@ namespace ZooTracker.Controllers
             _unitOfWork = unitOfWork;
             _logger = logger;
             _zooHelpers = zooHelpers;
-            
+
         }
 
         [HttpPost("add")]
@@ -56,13 +56,13 @@ namespace ZooTracker.Controllers
                 _logger.LogInformation($"Zoo: {zoo.Name} with ID: {zoo.Id} added");
                 await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { Area = "ZooController", Note = $"Zoo: {zoo.Name} with ID: {zoo.Id} added by {userEmail}", CorrelationID = correlationID });
                 await _unitOfWork.Save();
-            } catch (Exception e) 
+            } catch (Exception e)
             {
 
-                return BadRequest(new { innerException = e.InnerException.ToString(), issue = "Duplicate Name"});
+                return BadRequest(new { innerException = e.InnerException.ToString(), issue = "Duplicate Name" });
             }
 
-            
+
             return Created(string.Empty, $"Zoo: {zoo.Name} created successfully"); //the first param should direct to where the resource can be access (get method)
         }
 
@@ -106,7 +106,7 @@ namespace ZooTracker.Controllers
             if (zoo.Id != zooToUpdate.Id)
             {
                 return BadRequest("Check IDs of Zoo");
-            }            
+            }
             try
             {
                 _zooHelpers.UpdateZooFromVM(zooToUpdate, zoo, userEmail);
@@ -119,11 +119,89 @@ namespace ZooTracker.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.InnerException.ToString());
-                await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { Area = "ZooController", Note = $"Error update Zoo: {zoo}", CorrelationID = correlationID });
+                var errorToReturn = ex.InnerException.ToString();
+                _logger.LogError(errorToReturn);
+                //await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { Area = "ZooController", Note = $"Error update Zoo: {zoo}", Exception = ex.Message.ToString(), InnerException = ex.InnerException.ToString(), CorrelationID = correlationID });
+                //await _unitOfWork.Save();
+
+                if (errorToReturn.Contains("duplicate key row in object 'Zoo.Animals' with unique index 'IX_Animals_Name_ZooId'", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return BadRequest("Duplicate Animal Try again.");
+                }
+                return BadRequest(errorToReturn);
+            }
+        }
+
+        //TODO for inactivate and activate can create service and then pass the object
+
+        [HttpPut("inactivate/{id}")]
+        [Authorize(Roles ="Admin")]
+        [GetGuidForLogging]
+        public async Task<IActionResult> InactivateZoo(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest("Invalid ID");
+            }
+
+            var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email) ?? "User Email not found";
+            string correlationID = HttpContext.Items["correlationID"].ToString() ?? "";
+
+            var zooToUpdate = _unitOfWork.Zoos.Get(x => x.Id == id, "Address,OpenDaysHours,Animals");
+            zooToUpdate.IsActive = false;
+            zooToUpdate.Address.IsActive = false;
+            zooToUpdate.OpenDaysHours.ForEach(x => x.IsOpen = false);
+            zooToUpdate.Animals.ForEach(x => x.IsActive = false);
+            _zooHelpers.UpdateModifiedFields(zooToUpdate, userEmail);
+
+            await _unitOfWork.Zoos.Update(zooToUpdate);
+            await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { Area = "ZooController", Note = $"Zoo id: {id} inactivated by: {userEmail}", CorrelationID = correlationID });
+            _logger.LogInformation($"Zoo id: {id} inactivated by: {userEmail}");
+            try
+            {
                 await _unitOfWork.Save();
+            }
+            catch(Exception ex) 
+            {
+                _logger.LogInformation($"Failed to inactivate Zoo \"{id}\".  Error was: {ex.InnerException.ToString()}");
                 return BadRequest(ex.InnerException.ToString());
             }
+            return Ok(new ZooVM(zooToUpdate));
+        }
+
+        [HttpPut("activate/{id}")]
+        [Authorize(Roles = "Admin")]
+        [GetGuidForLogging]
+        public async Task<IActionResult> ActivateZoo(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest("Invalid ID");
+            }
+
+            var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.Email) ?? "User Email not found";
+            string correlationID = HttpContext.Items["correlationID"].ToString() ?? "";
+
+            var zooToUpdate = _unitOfWork.Zoos.Get(x => x.Id == id, "Address,OpenDaysHours,Animals");
+            zooToUpdate.IsActive = true;
+            zooToUpdate.Address.IsActive = true;
+            zooToUpdate.OpenDaysHours.ForEach(x => x.IsOpen = true);
+            zooToUpdate.Animals.ForEach(x => x.IsActive = true);
+            _zooHelpers.UpdateModifiedFields(zooToUpdate, userEmail);
+
+            await _unitOfWork.Zoos.Update(zooToUpdate);
+            await _unitOfWork.EnterpriseLogging.Add(new EnterpriseLogging { Area = "ZooController", Note = $"Zoo id: {id} reactivated by: {userEmail}", CorrelationID = correlationID });
+            _logger.LogInformation($"Zoo id: {id} inactivated by: {userEmail}");
+            try
+            {
+                await _unitOfWork.Save();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Failed to reactivate Zoo \"{id}\".  Error was: {ex.InnerException.ToString()}");
+                return BadRequest(ex.InnerException.ToString());
+            }
+            return Ok(new ZooVM(zooToUpdate));
         }
     }
 }

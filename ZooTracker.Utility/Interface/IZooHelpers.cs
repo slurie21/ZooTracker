@@ -12,5 +12,6 @@ namespace ZooTracker.Utility.Interface
     {
         Zoo UpdateZooFromVM(Zoo zoo, ZooVM zooVM, string updatedBy);
         ZooAddress UpdateZooAddressFromVM(ZooAddress address, ZooAddressVM addressVM);
+        Zoo UpdateModifiedFields(Zoo zoo, string modifiedBy);
     }
 }
