@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZooTracker.DataAccess.Context;
 
@@ -11,9 +12,11 @@ using ZooTracker.DataAccess.Context;
 namespace ZooTracker.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240701193156_AddModifiedByToZoo")]
+    partial class AddModifiedByToZoo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -364,134 +367,6 @@ namespace ZooTracker.DataAccess.Migrations
                     b.HasIndex("ZooId");
 
                     b.ToTable("OpenDaysHours", "Zoo");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CloseTime = new TimeOnly(17, 0, 0),
-                            DayOfWeek = "Monday",
-                            IsOpen = true,
-                            OpenTime = new TimeOnly(9, 0, 0),
-                            ZooId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CloseTime = new TimeOnly(17, 0, 0),
-                            DayOfWeek = "Tuesday",
-                            IsOpen = true,
-                            OpenTime = new TimeOnly(9, 0, 0),
-                            ZooId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CloseTime = new TimeOnly(17, 0, 0),
-                            DayOfWeek = "Wednesday",
-                            IsOpen = true,
-                            OpenTime = new TimeOnly(9, 0, 0),
-                            ZooId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CloseTime = new TimeOnly(17, 0, 0),
-                            DayOfWeek = "Thursday",
-                            IsOpen = true,
-                            OpenTime = new TimeOnly(9, 0, 0),
-                            ZooId = 1
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CloseTime = new TimeOnly(17, 0, 0),
-                            DayOfWeek = "Friday",
-                            IsOpen = true,
-                            OpenTime = new TimeOnly(9, 0, 0),
-                            ZooId = 1
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CloseTime = new TimeOnly(18, 0, 0),
-                            DayOfWeek = "Saturday",
-                            IsOpen = true,
-                            OpenTime = new TimeOnly(10, 0, 0),
-                            ZooId = 1
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CloseTime = new TimeOnly(18, 0, 0),
-                            DayOfWeek = "Sunday",
-                            IsOpen = true,
-                            OpenTime = new TimeOnly(10, 0, 0),
-                            ZooId = 1
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CloseTime = new TimeOnly(16, 0, 0),
-                            DayOfWeek = "Monday",
-                            IsOpen = true,
-                            OpenTime = new TimeOnly(8, 0, 0),
-                            ZooId = 2
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CloseTime = new TimeOnly(16, 0, 0),
-                            DayOfWeek = "Tuesday",
-                            IsOpen = true,
-                            OpenTime = new TimeOnly(8, 0, 0),
-                            ZooId = 2
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CloseTime = new TimeOnly(16, 0, 0),
-                            DayOfWeek = "Wednesday",
-                            IsOpen = true,
-                            OpenTime = new TimeOnly(8, 0, 0),
-                            ZooId = 2
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CloseTime = new TimeOnly(16, 0, 0),
-                            DayOfWeek = "Thursday",
-                            IsOpen = true,
-                            OpenTime = new TimeOnly(8, 0, 0),
-                            ZooId = 2
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CloseTime = new TimeOnly(16, 0, 0),
-                            DayOfWeek = "Friday",
-                            IsOpen = true,
-                            OpenTime = new TimeOnly(8, 0, 0),
-                            ZooId = 2
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CloseTime = new TimeOnly(17, 0, 0),
-                            DayOfWeek = "Saturday",
-                            IsOpen = true,
-                            OpenTime = new TimeOnly(9, 0, 0),
-                            ZooId = 2
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CloseTime = new TimeOnly(17, 0, 0),
-                            DayOfWeek = "Sunday",
-                            IsOpen = true,
-                            OpenTime = new TimeOnly(9, 0, 0),
-                            ZooId = 2
-                        });
                 });
 
             modelBuilder.Entity("ZooTracker.Models.Entity.Zoo", b =>
@@ -540,32 +415,6 @@ namespace ZooTracker.DataAccess.Migrations
                         .IsUnique();
 
                     b.ToTable("Zoos", "Zoo");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ChildTicket = 15.0,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            IsActive = true,
-                            MainAttraction = "Lions",
-                            Name = "CityA Zoo",
-                            SeniorTicket = 20.0,
-                            TicketCost = 25.0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ChildTicket = 18.0,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            IsActive = true,
-                            MainAttraction = "Tigers",
-                            Name = "CityB Zoo",
-                            SeniorTicket = 25.0,
-                            TicketCost = 30.0
-                        });
                 });
 
             modelBuilder.Entity("ZooTracker.Models.Entity.ZooAddress", b =>
@@ -580,7 +429,7 @@ namespace ZooTracker.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
+                    b.Property<string>("CreateBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -614,243 +463,6 @@ namespace ZooTracker.DataAccess.Migrations
                         .IsUnique();
 
                     b.ToTable("ZooAddress", "Zoo");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            City = "CityA",
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            IsActive = true,
-                            State = "StateA",
-                            Street1 = "123 Zoo St",
-                            Zip = "12345",
-                            ZooId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            City = "CityB",
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            IsActive = true,
-                            State = "StateB",
-                            Street1 = "456 Zoo Ln",
-                            Zip = "67890",
-                            ZooId = 2
-                        });
-                });
-
-            modelBuilder.Entity("ZooTracker.Models.Entity.ZooAnimal", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("FemaleNum")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Habitat")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("MaleNum")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("TotalNum")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ZooId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ZooId");
-
-                    b.HasIndex("Name", "ZooId")
-                        .IsUnique();
-
-                    b.ToTable("Animals", "Zoo");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            FemaleNum = 3,
-                            Habitat = "Savannah",
-                            IsActive = true,
-                            MaleNum = 2,
-                            Name = "Lion",
-                            TotalNum = 5,
-                            ZooId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            FemaleNum = 2,
-                            Habitat = "Forest",
-                            IsActive = true,
-                            MaleNum = 3,
-                            Name = "Tiger",
-                            TotalNum = 5,
-                            ZooId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            FemaleNum = 4,
-                            Habitat = "Grassland",
-                            IsActive = true,
-                            MaleNum = 1,
-                            Name = "Elephant",
-                            TotalNum = 5,
-                            ZooId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            FemaleNum = 2,
-                            Habitat = "Savannah",
-                            IsActive = true,
-                            MaleNum = 2,
-                            Name = "Giraffe",
-                            TotalNum = 4,
-                            ZooId = 1
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            FemaleNum = 2,
-                            Habitat = "Forest",
-                            IsActive = true,
-                            MaleNum = 2,
-                            Name = "Panda",
-                            TotalNum = 4,
-                            ZooId = 1
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            FemaleNum = 5,
-                            Habitat = "Arctic",
-                            IsActive = true,
-                            MaleNum = 5,
-                            Name = "Penguin",
-                            TotalNum = 10,
-                            ZooId = 1
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            FemaleNum = 3,
-                            Habitat = "Savannah",
-                            IsActive = true,
-                            MaleNum = 2,
-                            Name = "Lion",
-                            TotalNum = 5,
-                            ZooId = 2
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            FemaleNum = 2,
-                            Habitat = "Forest",
-                            IsActive = true,
-                            MaleNum = 3,
-                            Name = "Tiger",
-                            TotalNum = 5,
-                            ZooId = 2
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            FemaleNum = 4,
-                            Habitat = "Grassland",
-                            IsActive = true,
-                            MaleNum = 1,
-                            Name = "Elephant",
-                            TotalNum = 5,
-                            ZooId = 2
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            FemaleNum = 2,
-                            Habitat = "Savannah",
-                            IsActive = true,
-                            MaleNum = 2,
-                            Name = "Giraffe",
-                            TotalNum = 4,
-                            ZooId = 2
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            FemaleNum = 2,
-                            Habitat = "Forest",
-                            IsActive = true,
-                            MaleNum = 2,
-                            Name = "Panda",
-                            TotalNum = 4,
-                            ZooId = 2
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
-                            FemaleNum = 5,
-                            Habitat = "Arctic",
-                            IsActive = true,
-                            MaleNum = 5,
-                            Name = "Penguin",
-                            TotalNum = 10,
-                            ZooId = 2
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -922,21 +534,10 @@ namespace ZooTracker.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ZooTracker.Models.Entity.ZooAnimal", b =>
-                {
-                    b.HasOne("ZooTracker.Models.Entity.Zoo", null)
-                        .WithMany("Animals")
-                        .HasForeignKey("ZooId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ZooTracker.Models.Entity.Zoo", b =>
                 {
                     b.Navigation("Address")
                         .IsRequired();
-
-                    b.Navigation("Animals");
 
                     b.Navigation("OpenDaysHours");
                 });

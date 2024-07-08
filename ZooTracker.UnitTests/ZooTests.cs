@@ -9,6 +9,7 @@ using ZooTracker.Models.ViewModels;
 using ZooTracker.DataAccess.IRepo;
 using ZooTracker.Controllers;
 using ZooTracker.Models.Entity;
+using ZooTracker.Utility.Interface;
 
 namespace ZooTracker.UnitTests
 {
@@ -17,12 +18,14 @@ namespace ZooTracker.UnitTests
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
         private readonly Mock<ILogger<ZooController>> _mockLogger;
         private readonly ZooController _controller;
+        private readonly Mock<IZooHelpers> _helpers;
 
         public ZoosControllerTests()
         {
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _mockLogger = new Mock<ILogger<ZooController>>();
-            _controller = new ZooController(_mockUnitOfWork.Object, _mockLogger.Object);
+            _helpers = new Mock<IZooHelpers>();
+            _controller = new ZooController(_mockUnitOfWork.Object, _mockLogger.Object, _helpers.Object);
         }
 
         [Fact]

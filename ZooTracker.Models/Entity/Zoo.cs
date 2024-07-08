@@ -30,6 +30,7 @@ namespace ZooTracker.Models.Entity
             CreatedDate = zooVM.CreatedDate ?? DateTime.UtcNow;
             Address = new ZooAddress(zooVM.Address);
             OpenDaysHours = new List<OpenDaysHours>(zooVM.OpenDaysHours.Select(x => new OpenDaysHours(x)));
+            Animals = new List<ZooAnimal>(zooVM.Animals.Select(x => new ZooAnimal(x)));
         }
 
 
@@ -47,14 +48,18 @@ namespace ZooTracker.Models.Entity
         public bool IsActive { get; set; } = true;
 
         [Required]
-        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedDate { get; set; }
 
         [Required]
         public string CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public string? ModifiedBy {  get; set; }
 
         [Required]
         public ZooAddress Address { get; set; }
         [Required]
         public List<OpenDaysHours> OpenDaysHours { get; set; }
+        [Required]
+        public List<ZooAnimal> Animals {  get; set; }
     }
 }

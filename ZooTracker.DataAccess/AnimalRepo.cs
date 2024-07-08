@@ -10,14 +10,13 @@ using ZooTracker.Models.Entity;
 
 namespace ZooTracker.DataAccess
 {
-    public class ZooRepo : Repository<Zoo>, IZooRepo
+    public class AnimalRepo : Repository<ZooAnimal>, IAnimalRepo
     {
         private AppDbContext _db;
 
-        public ZooRepo(AppDbContext db) : base(db)
+        public AnimalRepo(AppDbContext db) : base(db)
         {
             _db = db;
         }
-
     }
 }

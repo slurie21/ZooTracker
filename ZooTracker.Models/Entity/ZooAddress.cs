@@ -39,7 +39,7 @@ namespace ZooTracker.Models.Entity
         [Required]
         public DateTime CreatedDate { get; set; }
         [Required]
-        public string CreateBy { get; set; }
+        public string CreatedBy { get; set; }
         [Required]
         public bool IsActive {  get; set; } 
 

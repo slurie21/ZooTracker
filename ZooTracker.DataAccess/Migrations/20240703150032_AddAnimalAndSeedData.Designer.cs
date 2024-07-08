@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZooTracker.DataAccess.Context;
 
@@ -11,9 +12,11 @@ using ZooTracker.DataAccess.Context;
 namespace ZooTracker.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240703150032_AddAnimalAndSeedData")]
+    partial class AddAnimalAndSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -546,8 +549,8 @@ namespace ZooTracker.DataAccess.Migrations
                         {
                             Id = 1,
                             ChildTicket = 15.0,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             IsActive = true,
                             MainAttraction = "Lions",
                             Name = "CityA Zoo",
@@ -558,8 +561,8 @@ namespace ZooTracker.DataAccess.Migrations
                         {
                             Id = 2,
                             ChildTicket = 18.0,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             IsActive = true,
                             MainAttraction = "Tigers",
                             Name = "CityB Zoo",
@@ -580,7 +583,7 @@ namespace ZooTracker.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
+                    b.Property<string>("CreateBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -620,8 +623,8 @@ namespace ZooTracker.DataAccess.Migrations
                         {
                             Id = 1,
                             City = "CityA",
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreateBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             IsActive = true,
                             State = "StateA",
                             Street1 = "123 Zoo St",
@@ -632,8 +635,8 @@ namespace ZooTracker.DataAccess.Migrations
                         {
                             Id = 2,
                             City = "CityB",
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreateBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             IsActive = true,
                             State = "StateB",
                             Street1 = "456 Zoo Ln",
@@ -698,8 +701,8 @@ namespace ZooTracker.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             FemaleNum = 3,
                             Habitat = "Savannah",
                             IsActive = true,
@@ -711,8 +714,8 @@ namespace ZooTracker.DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             FemaleNum = 2,
                             Habitat = "Forest",
                             IsActive = true,
@@ -724,8 +727,8 @@ namespace ZooTracker.DataAccess.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             FemaleNum = 4,
                             Habitat = "Grassland",
                             IsActive = true,
@@ -737,8 +740,8 @@ namespace ZooTracker.DataAccess.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             FemaleNum = 2,
                             Habitat = "Savannah",
                             IsActive = true,
@@ -750,8 +753,8 @@ namespace ZooTracker.DataAccess.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             FemaleNum = 2,
                             Habitat = "Forest",
                             IsActive = true,
@@ -763,8 +766,8 @@ namespace ZooTracker.DataAccess.Migrations
                         new
                         {
                             Id = 6,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             FemaleNum = 5,
                             Habitat = "Arctic",
                             IsActive = true,
@@ -776,8 +779,8 @@ namespace ZooTracker.DataAccess.Migrations
                         new
                         {
                             Id = 7,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             FemaleNum = 3,
                             Habitat = "Savannah",
                             IsActive = true,
@@ -789,8 +792,8 @@ namespace ZooTracker.DataAccess.Migrations
                         new
                         {
                             Id = 8,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             FemaleNum = 2,
                             Habitat = "Forest",
                             IsActive = true,
@@ -802,8 +805,8 @@ namespace ZooTracker.DataAccess.Migrations
                         new
                         {
                             Id = 9,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             FemaleNum = 4,
                             Habitat = "Grassland",
                             IsActive = true,
@@ -815,8 +818,8 @@ namespace ZooTracker.DataAccess.Migrations
                         new
                         {
                             Id = 10,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             FemaleNum = 2,
                             Habitat = "Savannah",
                             IsActive = true,
@@ -828,8 +831,8 @@ namespace ZooTracker.DataAccess.Migrations
                         new
                         {
                             Id = 11,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             FemaleNum = 2,
                             Habitat = "Forest",
                             IsActive = true,
@@ -841,8 +844,8 @@ namespace ZooTracker.DataAccess.Migrations
                         new
                         {
                             Id = 12,
-                            CreatedBy = "admin@admin.com",
-                            CreatedDate = new DateTime(2024, 7, 4, 18, 35, 19, 859, DateTimeKind.Utc).AddTicks(6444),
+                            CreatedBy = "Admin",
+                            CreatedDate = new DateTime(2024, 7, 3, 15, 0, 31, 816, DateTimeKind.Utc).AddTicks(6609),
                             FemaleNum = 5,
                             Habitat = "Arctic",
                             IsActive = true,
